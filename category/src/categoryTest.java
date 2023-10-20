@@ -59,6 +59,11 @@ public class categoryTest {
         JSONObject response_json = new JSONObject(response_str.body());
         assertEquals(response_json.get("title"), "example title");
         assertEquals(response_json.get("description"), "example description");
+        int newId = Integer.parseInt(response_json.get("id").toString());
+
+        HttpRequest request_del = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/categories/" + newId)).DELETE().build();
+        HttpResponse<String> response_str_del = client.send(request_del, HttpResponse.BodyHandlers.ofString());
+        assertEquals(200, response_str_del.statusCode());
     }
     @Test
     public void get_categories_i() throws IOException, InterruptedException {
@@ -74,6 +79,15 @@ public class categoryTest {
     @Test
     public void post_categories_i() throws IOException, InterruptedException {
         HttpClient client = HttpClient.newHttpClient();
+
+        HttpRequest request_get = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/categories/1")).GET().build();
+        HttpResponse<String> response_str_get = client.send(request_get, HttpResponse.BodyHandlers.ofString());
+        assertEquals(200, response_str_get.statusCode());
+        JSONObject response_json_get = new JSONObject(response_str_get.body());
+        JSONArray response_object = new JSONArray(response_json_get.get("categories").toString());
+        String original_title = response_object.getJSONObject(0).get("title").toString();
+        String original_desc = response_object.getJSONObject(0).get("description").toString();
+
         JSONObject jSONObject = new JSONObject();
         jSONObject.put("title", "different title");
         jSONObject.put("description","different description");
@@ -83,11 +97,26 @@ public class categoryTest {
         JSONObject response_json = new JSONObject(response_str.body());
         assertEquals(response_json.get("title"), "different title");
         assertEquals(response_json.get("description"), "different description");
+
+        JSONObject reset = new JSONObject();
+        reset.put("title", original_title);
+        reset.put("description",original_desc);
+        HttpRequest request_reset = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/categories/1")).POST(HttpRequest.BodyPublishers.ofString(reset.toString())).build();
+        HttpResponse<String> response_str_reset = client.send(request_reset, HttpResponse.BodyHandlers.ofString());
     }
 
     @Test
     public void put_categories_i() throws IOException, InterruptedException {
         HttpClient client = HttpClient.newHttpClient();
+
+        HttpRequest request_get = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/categories/1")).GET().build();
+        HttpResponse<String> response_str_get = client.send(request_get, HttpResponse.BodyHandlers.ofString());
+        assertEquals(200, response_str_get.statusCode());
+        JSONObject response_json_get = new JSONObject(response_str_get.body());
+        JSONArray response_object = new JSONArray(response_json_get.get("categories").toString());
+        String original_title = response_object.getJSONObject(0).get("title").toString();
+        String original_desc = response_object.getJSONObject(0).get("description").toString();
+
         JSONObject jSONObject = new JSONObject();
         jSONObject.put("title", "even more different title");
         jSONObject.put("description","even more different description");
@@ -97,6 +126,12 @@ public class categoryTest {
         JSONObject response_json = new JSONObject(response_str.body());
         assertEquals(response_json.get("title"), "even more different title");
         assertEquals(response_json.get("description"), "even more different description");
+
+        JSONObject reset = new JSONObject();
+        reset.put("title", original_title);
+        reset.put("description",original_desc);
+        HttpRequest request_reset = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/categories/1")).POST(HttpRequest.BodyPublishers.ofString(reset.toString())).build();
+        HttpResponse<String> response_str_reset = client.send(request_reset, HttpResponse.BodyHandlers.ofString());
     }
 
     @Test
@@ -159,6 +194,10 @@ public class categoryTest {
                 assertEquals("new project description", response_object.getJSONObject(i).get("description"));
             }
         }
+
+        HttpRequest request_del = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/categories/2/projects/" + newId)).DELETE().build();
+        HttpResponse<String> response_str_del = client.send(request_del, HttpResponse.BodyHandlers.ofString());
+        assertEquals(200, response_str_del.statusCode());
     }
 
     @Test
@@ -222,6 +261,10 @@ public class categoryTest {
                 assertEquals("new todo description", response_object.getJSONObject(i).get("description"));
             }
         }
+
+        HttpRequest request_del = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/categories/2/todos/" + newId)).DELETE().build();
+        HttpResponse<String> response_str_del = client.send(request_del, HttpResponse.BodyHandlers.ofString());
+        assertEquals(200, response_str_del.statusCode());
     }
 
     @Test
