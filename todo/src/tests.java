@@ -45,7 +45,7 @@ public class tests {
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/categories")).GET().build();
         HttpResponse<String> response_str = client.send(request, HttpResponse.BodyHandlers.ofString());
-        assertEquals(201, response_str.statusCode());
+        assertEquals(200, response_str.statusCode());
         System.out.println(response_str.body());
     }
     @Test
