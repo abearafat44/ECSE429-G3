@@ -14,8 +14,8 @@ import java.net.http.HttpRequest.BodyPublisher;
 import java.net.http.HttpResponse.BodyHandlers;
 
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import org.json.simple.*;
+import javax.swing.JOptionPane;     
+import org.json.*;
 
 import org.junit.Test;
 
@@ -34,6 +34,11 @@ public class tests {
         assertEquals(201, response_str.statusCode());
         System.out.println(response_str.body());
 
+        String xml = XML.toString(jSONObject);
+        request = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/todos")).POST(HttpRequest.BodyPublishers.ofString(xml)).build();
+        assertEquals(201, response_str.statusCode());
+        response_str = client.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println(response_str.body());
     }
     
 }

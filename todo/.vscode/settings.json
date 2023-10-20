@@ -3,6 +3,7 @@
     "java.project.outputPath": "bin",
     "java.project.referencedLibraries": [
         "lib/**/*.jar",
-        "c:\\Users\\james\\Downloads\\json-simple-1.1.1.jar"
+        "c:\\Users\\james\\Downloads\\json-simple-1.1.1.jar",
+        "c:\\Users\\james\\Downloads\\jar_files\\json-20231013.jar"
     ]
 }
