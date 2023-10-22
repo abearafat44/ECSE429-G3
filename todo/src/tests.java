@@ -1,5 +1,6 @@
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -22,8 +23,18 @@ import org.junit.Test;
 
 public class tests {
 
+        @Test
+    public void get_todos() throws IOException, InterruptedException {
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/todos")).GET().build();
+        HttpResponse<String> response_str = client.send(request, HttpResponse.BodyHandlers.ofString());
+        assertEquals(200, response_str.statusCode());
+        System.out.println(response_str.body());
+    }
+
+    
     @Test
-    public void testing_post() throws IOException, InterruptedException {
+    public void todo_post() throws IOException, InterruptedException {
         HttpClient client = HttpClient.newHttpClient();
         JSONObject jSONObject = new JSONObject();
         jSONObject.put("title", "test");
@@ -33,13 +44,22 @@ public class tests {
         HttpResponse<String> response_str = client.send(request, HttpResponse.BodyHandlers.ofString());
         assertEquals(201, response_str.statusCode());
         System.out.println(response_str.body());
-
-        String xml = XML.toString(jSONObject);
-        request = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/todos")).POST(HttpRequest.BodyPublishers.ofString(xml)).build();
+    }
+    
+    @Test
+    public void todo_post_xml() throws IOException, InterruptedException {
+        HttpClient client = HttpClient.newHttpClient();
+        JSONObject jSONObject = new JSONObject();
+        jSONObject.put("title", "test");
+        jSONObject.put("doneStatus",false);
+        jSONObject.put("description","trying so hard rn");
+        var xml = XML.toString(jSONObject,"todo");
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/todos")).header("Content-Type" ,"application/xml").POST(HttpRequest.BodyPublishers.ofString(xml)).build();
+        HttpResponse<String> response_str = client.send(request, HttpResponse.BodyHandlers.ofString());
         assertEquals(201, response_str.statusCode());
-        response_str = client.send(request, HttpResponse.BodyHandlers.ofString());
         System.out.println(response_str.body());
     }
+
     @Test
     public void get_categories() throws IOException, InterruptedException {
         HttpClient client = HttpClient.newHttpClient();
@@ -60,7 +80,7 @@ public class tests {
     //     JSONObject jSONObject = new JSONObject();
     //     HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/categories")).headers().build();
     //     HttpResponse<String> response_str = client.send(request, HttpResponse.BodyHandlers.ofString());
-    //     assertEquals(201, response_str.statusCode());
+    //     assertEquals(200, response_str.statusCode());
     //     System.out.println(response_str.body());
     // }
     @Test
