@@ -206,7 +206,7 @@ public class tests {
         System.out.println(response_str.body()); 
     }
 
-    @Test
+    @Test // Same bug, XML and ids
     public void todo_id_categories_post_test_xml() throws IOException, InterruptedException {
         HttpClient client = HttpClient.newHttpClient();
         JSONObject jSONObject = new JSONObject();
