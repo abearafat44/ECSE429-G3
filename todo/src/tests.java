@@ -52,8 +52,18 @@ public class tests {
         HttpResponse<String> response_str = client.send(request, HttpResponse.BodyHandlers.ofString());
         assertEquals(201, response_str.statusCode());
         System.out.println(response_str.body());
+
+        JSONObject response_json = new JSONObject(response_str.body());
+        assertEquals(response_json.get("title"), "test");
+        assertEquals(response_json.get("description"), "json payload new todo");
+        int newId = Integer.parseInt(response_json.get("id").toString());
+
+        HttpRequest request_del = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/todos/" + newId)).DELETE().build();
+        HttpResponse<String> response_str_del = client.send(request_del, HttpResponse.BodyHandlers.ofString());
+        assertEquals(200, response_str_del.statusCode());
     }
     
+
     @Test
     public void todo_post_xml() throws IOException, InterruptedException {
         HttpClient client = HttpClient.newHttpClient();
@@ -66,6 +76,15 @@ public class tests {
         HttpResponse<String> response_str = client.send(request, HttpResponse.BodyHandlers.ofString());
         assertEquals(201, response_str.statusCode());
         System.out.println(response_str.body());
+
+        JSONObject response_json = new JSONObject(response_str.body());
+        assertEquals(response_json.get("title"), "test_post_xml");
+        assertEquals(response_json.get("description"), "xml payload new todo");
+        int newId = Integer.parseInt(response_json.get("id").toString());
+
+        HttpRequest request_del = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/todos/" + newId)).DELETE().build();
+        HttpResponse<String> response_str_del = client.send(request_del, HttpResponse.BodyHandlers.ofString());
+        assertEquals(200, response_str_del.statusCode());        
     }
 
 
@@ -93,24 +112,23 @@ public class tests {
         JSONObject jSONObject = new JSONObject();
         jSONObject.put("title", "test_id_post");
         jSONObject.put("doneStatus",false);
-        jSONObject.put("description","id post testing for todo #1");
-        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/todos/1")).POST(HttpRequest.BodyPublishers.ofString(jSONObject.toString())).build();
+        jSONObject.put("description","id post testing for todo #2");
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/todos/2")).POST(HttpRequest.BodyPublishers.ofString(jSONObject.toString())).build();
         HttpResponse<String> response_str = client.send(request, HttpResponse.BodyHandlers.ofString());
         assertEquals(200, response_str.statusCode());
-        System.out.println(response_str.body());  
     }
 
     @Test // Testing to show POST doesn't modify fields not included in the payload of the request
     public void todo_id_post_test_xml() throws IOException, InterruptedException {
         HttpClient client = HttpClient.newHttpClient();
         JSONObject jSONObject = new JSONObject();
-        jSONObject.put("title", "test_id_post");
+        jSONObject.put("title", "test_id_post 2");
         jSONObject.put("doneStatus",false);
         var xml = XML.toString(jSONObject,"todo");        
-        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/todos/1")).header("Content-Type" ,"application/xml").POST(HttpRequest.BodyPublishers.ofString(xml)).build();
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/todos/2")).header("Content-Type" ,"application/xml").POST(HttpRequest.BodyPublishers.ofString(xml)).build();
         HttpResponse<String> response_str = client.send(request, HttpResponse.BodyHandlers.ofString());
         assertEquals(200, response_str.statusCode());
-        System.out.println(response_str.body());  
+        System.out.println(response_str.body());          
     }
 
     @Test
@@ -119,32 +137,51 @@ public class tests {
         JSONObject jSONObject = new JSONObject();
         jSONObject.put("title", "test_id_put");
         jSONObject.put("doneStatus",false);
-        jSONObject.put("description","id post testing for todo #2");
+        jSONObject.put("description","id put testing for todo #2");
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/todos/2")).PUT(HttpRequest.BodyPublishers.ofString(jSONObject.toString())).build();
         HttpResponse<String> response_str = client.send(request, HttpResponse.BodyHandlers.ofString());
         assertEquals(200, response_str.statusCode());
-        System.out.println(response_str.body());    
+        JSONObject response_json = new JSONObject(response_str.body());
+        assertEquals(response_json.get("title"), "test_id_put");
+        assertEquals(response_json.get("description"), "id put testing for todo #2");    
     }
 
     @Test // Test showing PUT defaults the fields not mentioned in the payload instead of not touching them
     public void todo_id_put__xml_test() throws IOException, InterruptedException {
         HttpClient client = HttpClient.newHttpClient();
         JSONObject jSONObject = new JSONObject();
-        jSONObject.put("title", "test_id_put");
+        jSONObject.put("title", "test_id_put 2");
         jSONObject.put("doneStatus",false);
         var xml = XML.toString(jSONObject,"todo"); 
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/todos/2")).header("Content-Type" ,"application/xml").PUT(HttpRequest.BodyPublishers.ofString(xml)).build();
         HttpResponse<String> response_str = client.send(request, HttpResponse.BodyHandlers.ofString());
         assertEquals(200, response_str.statusCode());
-        System.out.println(response_str.body());    
+        System.out.println(response_str.body());
+        JSONObject response_json = new JSONObject(response_str.body());
+        assertEquals(response_json.get("title"), "test_id_put 2");
+        assertEquals(response_json.get("description"), "");            
     }    
 
     @Test
     public void delete_todo_id_test() throws IOException, InterruptedException {
         HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/todos/2")).DELETE().build();
+        JSONObject jSONObject = new JSONObject();
+        jSONObject.put("title", "test");
+        jSONObject.put("doneStatus",false);
+        jSONObject.put("description","json payload new todo");
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/todos")).POST(HttpRequest.BodyPublishers.ofString(jSONObject.toString())).build();
         HttpResponse<String> response_str = client.send(request, HttpResponse.BodyHandlers.ofString());
-        assertEquals(200, response_str.statusCode());        
+        assertEquals(201, response_str.statusCode());
+        System.out.println(response_str.body());
+
+        JSONObject response_json = new JSONObject(response_str.body());
+        assertEquals(response_json.get("title"), "test");
+        assertEquals(response_json.get("description"), "json payload new todo");
+        int newId = Integer.parseInt(response_json.get("id").toString());
+
+        HttpRequest request_del = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/todos/" + newId)).DELETE().build();
+        HttpResponse<String> response_str_del = client.send(request_del, HttpResponse.BodyHandlers.ofString());
+        assertEquals(200, response_str_del.statusCode());       
     }
 
     @Test
@@ -153,7 +190,7 @@ public class tests {
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/todos/1/tasksof")).GET().build();
         HttpResponse<String> response_str = client.send(request, HttpResponse.BodyHandlers.ofString());
         assertEquals(200, response_str.statusCode());
-        System.out.println(response_str.body());          
+
     }
 
     @Test //Test failing because of bug in XML delivery, errorMessage: "can't find matching value for id" --BUG
@@ -162,48 +199,67 @@ public class tests {
         JSONObject jSONObject = new JSONObject();
         jSONObject.put("id", "1");
         var xml = XML.toString(jSONObject,"todo"); 
-        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/todos/3/tasksof")).header("Content-Type" ,"application/xml").POST(HttpRequest.BodyPublishers.ofString(xml)).build();
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/todos/1/tasksof")).header("Content-Type" ,"application/xml").POST(HttpRequest.BodyPublishers.ofString(xml)).build();
         HttpResponse<String> response_str = client.send(request, HttpResponse.BodyHandlers.ofString());
-        assertEquals(404, response_str.statusCode());
-        System.out.println(response_str.body());         
+        assertEquals(404, response_str.statusCode());       
     }
-    @Test
-    public void todo_id_tasksof_post_test() throws IOException, InterruptedException {
+    @Test 
+    public void todo_id_tasksof_post_and_delete_test() throws IOException, InterruptedException {
         HttpClient client = HttpClient.newHttpClient();
+
+        JSONObject newProject = new JSONObject();
+        newProject.put("title", "project 2");
+        newProject.put("completed", false);
+        newProject.put("active", true);
+        newProject.put("description", "project 2 dummy");
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/projects")).POST(HttpRequest.BodyPublishers.ofString(newProject.toString())).build();
+        HttpResponse<String> response_str1 = client.send(request, HttpResponse.BodyHandlers.ofString());
+        assertEquals(201, response_str1.statusCode());
+
+        JSONObject id = new JSONObject(response_str1.body());
+        var ID = id.get("id");
         JSONObject jSONObject = new JSONObject();
-        jSONObject.put("id", "1");
-        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/todos/4/tasksof")).POST(HttpRequest.BodyPublishers.ofString(jSONObject.toString())).build();
-        HttpResponse<String> response_str = client.send(request, HttpResponse.BodyHandlers.ofString());
-        assertEquals(201, response_str.statusCode());
-        System.out.println(response_str.body());         
+        jSONObject.put("ID", ID);
+        HttpRequest request2 = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/todos/1/tasksof")).POST(HttpRequest.BodyPublishers.ofString(jSONObject.toString())).build();
+        HttpResponse<String> response_str2 = client.send(request2, HttpResponse.BodyHandlers.ofString());
+        assertEquals(201, response_str2.statusCode());
+        
+        HttpRequest request3 = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/todos/1/tasksof/" + ID)).DELETE().build();
+        HttpResponse<String> response_str3 = client.send(request3, HttpResponse.BodyHandlers.ofString());
+        assertEquals(200, response_str3.statusCode());  
+        HttpRequest request4 = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/projects/" + ID)).DELETE().build();
+        HttpResponse<String> response_str4 = client.send(request4, HttpResponse.BodyHandlers.ofString());
+        assertEquals(200, response_str4.statusCode());             
     }
 
-    @Test
-    public void todo_id_tasksof_id_delete_test() throws IOException, InterruptedException {
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/todos/3/tasksof/1")).DELETE().build();
-        HttpResponse<String> response_str = client.send(request, HttpResponse.BodyHandlers.ofString());
-        assertEquals(200, response_str.statusCode());         
-    }
 
     @Test
     public void todo_id_categories_get_test() throws IOException, InterruptedException {
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/todos/1/categories")).GET().build();
         HttpResponse<String> response_str = client.send(request, HttpResponse.BodyHandlers.ofString());
-        assertEquals(200, response_str.statusCode());
-        System.out.println(response_str.body());   
+        assertEquals(200, response_str.statusCode());   
     }
 
     @Test
-    public void todo_id_categories_post_test() throws IOException, InterruptedException {
+    public void todo_id_categories_post_and_delete_test() throws IOException, InterruptedException {
         HttpClient client = HttpClient.newHttpClient();
         JSONObject jSONObject = new JSONObject();
         jSONObject.put("id", "1");
-        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/todos/3/categories")).POST(HttpRequest.BodyPublishers.ofString(jSONObject.toString())).build();
-        HttpResponse<String> response_str = client.send(request, HttpResponse.BodyHandlers.ofString());
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/todos/1/categories/1")).DELETE().build();
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        assertEquals(200, response.statusCode()); 
+        HttpRequest request2 = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/todos/1/categories")).GET().build();
+        HttpResponse<String> response2 = client.send(request2, HttpResponse.BodyHandlers.ofString());
+        assertEquals(200, response2.statusCode());
+        JSONObject categories = new JSONObject(response2.body());
+        assertEquals("[]", categories.get("categories").toString());      
+        HttpRequest request3 = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/todos/1/categories")).POST(HttpRequest.BodyPublishers.ofString(jSONObject.toString())).build();
+        HttpResponse<String> response_str = client.send(request3, HttpResponse.BodyHandlers.ofString());
         assertEquals(201, response_str.statusCode());
-        System.out.println(response_str.body()); 
+        HttpRequest request4 = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/todos/1/categories")).GET().build();
+        HttpResponse<String> response4 = client.send(request4, HttpResponse.BodyHandlers.ofString());
+        assertEquals(200, response4.statusCode());
     }
 
     @Test // Same bug, XML and ids
@@ -215,16 +271,20 @@ public class tests {
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/todos/3/categories")).header("Content-Type" ,"application/xml").POST(HttpRequest.BodyPublishers.ofString(xml)).build();
         HttpResponse<String> response_str = client.send(request, HttpResponse.BodyHandlers.ofString());
         assertEquals(404, response_str.statusCode());
-        System.out.println(response_str.body()); 
     }
 
-    @Test
-    public void todo_id_categories_id_delete_test() throws IOException, InterruptedException {
+
+    @Test // bug concerning the example provided by the documentation
+    public void wrong_todo_test() throws IOException, InterruptedException {
         HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/todos/3/categories/1")).DELETE().build();
+        JSONObject jSONObject = new JSONObject();
+        jSONObject.put("title", "test");
+        jSONObject.put("doneStatus","false");
+        jSONObject.put("description","wrong format due to false being a string");
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/todos")).POST(HttpRequest.BodyPublishers.ofString(jSONObject.toString())).build();
         HttpResponse<String> response_str = client.send(request, HttpResponse.BodyHandlers.ofString());
-        assertEquals(200, response_str.statusCode());           
-    } 
+        assertEquals(400, response_str.statusCode());       
+    }
 
     @Test
     public void get_categories() throws IOException, InterruptedException {
