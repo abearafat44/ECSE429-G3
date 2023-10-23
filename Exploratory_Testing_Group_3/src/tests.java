@@ -1188,11 +1188,12 @@ public class tests {
     }
 
     @Test //Bug testing, Should return 404 yet doesn't
-    public void erroneous_todo_id_category_get_test() throws IOException, InterruptedException {
+    public void erroneous_project_id_category_get_test() throws IOException, InterruptedException {
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/projects/500000/categories")).GET().build();
         HttpResponse<String> response_str = client.send(request, HttpResponse.BodyHandlers.ofString());
         assertNotEquals(404, response_str.statusCode());
+    }
 
     @Test // Problem in the JSON: the right type is not used at the right place for multiple fields
     public void malformed_json_payload_test() throws IOException, InterruptedException {
