@@ -815,4 +815,377 @@ public class tests {
         }
     }
     
+    //ABE - PROJECTS
+    @Test
+    public void get_projects() throws IOException, InterruptedException {
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/projects")).GET().build();
+        HttpResponse<String> response_str = client.send(request, HttpResponse.BodyHandlers.ofString());
+        assertEquals(200, response_str.statusCode());
+        System.out.println(response_str.body());
+    }
+
+    @Test
+    public void get_projects_xml() throws IOException, InterruptedException {
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/projects")).header("Content-Type" ,"application/xml").GET().build();
+        HttpResponse<String> response_str = client.send(request, HttpResponse.BodyHandlers.ofString());
+        assertEquals(200, response_str.statusCode());
+        System.out.println(response_str.body());
+    }
+
+    @Test
+    public void project_post() throws IOException, InterruptedException {
+        HttpClient client = HttpClient.newHttpClient();
+        JSONObject jSONObject = new JSONObject();
+        jSONObject.put("title", "test_proj");
+        jSONObject.put("completed", true);
+        jSONObject.put("active", true);
+        jSONObject.put("description","json payload new proj");
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/projects")).POST(HttpRequest.BodyPublishers.ofString(jSONObject.toString())).build();
+        HttpResponse<String> response_str = client.send(request, HttpResponse.BodyHandlers.ofString());
+        assertEquals(201, response_str.statusCode());
+        System.out.println(response_str.body());
+
+        JSONObject response_json = new JSONObject(response_str.body());
+        assertEquals(response_json.get("title"), "test_proj");
+        assertEquals(response_json.get("completed"), "true");
+        assertEquals(response_json.get("active"), "true");
+        assertEquals(response_json.get("description"), "json payload new proj");
+        int newId = Integer.parseInt(response_json.get("id").toString());
+
+        HttpRequest request_del = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/projects/" + newId)).DELETE().build();
+        HttpResponse<String> response_str_del = client.send(request_del, HttpResponse.BodyHandlers.ofString());
+        assertEquals(200, response_str_del.statusCode());
+    }
+
+    @Test
+    public void project_post_xml() throws IOException, InterruptedException {
+        HttpClient client = HttpClient.newHttpClient();
+        JSONObject jSONObject = new JSONObject();
+        jSONObject.put("title", "test_proj");
+        jSONObject.put("completed", true);
+        jSONObject.put("active", true);
+        jSONObject.put("description","json payload new proj");
+        var xml = XML.toString(jSONObject,"project");
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/projects")).header("Content-Type" ,"application/xml").POST(HttpRequest.BodyPublishers.ofString(xml)).build();
+        HttpResponse<String> response_str = client.send(request, HttpResponse.BodyHandlers.ofString());
+        assertEquals(201, response_str.statusCode());
+        System.out.println(response_str.body());
+
+        JSONObject response_json = new JSONObject(response_str.body());
+        assertEquals(response_json.get("title"), "test_proj");
+        assertEquals(response_json.get("completed"), "true");
+        assertEquals(response_json.get("active"), "true");
+        assertEquals(response_json.get("description"), "json payload new proj");
+        int newId = Integer.parseInt(response_json.get("id").toString());
+
+        HttpRequest request_del = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/projects/" + newId)).DELETE().build();
+        HttpResponse<String> response_str_del = client.send(request_del, HttpResponse.BodyHandlers.ofString());
+        assertEquals(200, response_str_del.statusCode());
+    }
+
+    @Test
+    public void get_projects_id() throws IOException, InterruptedException {
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/projects/1")).GET().build();
+        HttpResponse<String> response_str = client.send(request, HttpResponse.BodyHandlers.ofString());
+        assertEquals(200, response_str.statusCode());
+        System.out.println(response_str.body());
+    }
+    @Test
+
+    public void get_projects_id_xml() throws IOException, InterruptedException {
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/projects/1")).header("Content-Type" ,"application/xml").GET().build();
+        HttpResponse<String> response_str = client.send(request, HttpResponse.BodyHandlers.ofString());
+        assertEquals(200, response_str.statusCode());
+        System.out.println(response_str.body());
+    }
+
+    @Test
+    public void project_id_post() throws IOException, InterruptedException {
+        HttpClient client = HttpClient.newHttpClient();
+        JSONObject jSONObject = new JSONObject();
+        jSONObject.put("title", "updated_test_proj");
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/projects/1")).POST(HttpRequest.BodyPublishers.ofString(jSONObject.toString())).build();
+        HttpResponse<String> response_str = client.send(request, HttpResponse.BodyHandlers.ofString());
+        assertEquals(200, response_str.statusCode());
+        System.out.println(response_str.body());
+        JSONObject response_json = new JSONObject(response_str.body());
+        assertEquals(response_json.get("title"), "updated_test_proj");
+        
+
+        jSONObject.put("title", "test_proj");
+        request = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/projects/1")).POST(HttpRequest.BodyPublishers.ofString(jSONObject.toString())).build();
+        response_str = client.send(request, HttpResponse.BodyHandlers.ofString());
+    }
+
+    @Test
+    public void project_id_post_xml() throws IOException, InterruptedException {
+        HttpClient client = HttpClient.newHttpClient();
+        JSONObject jSONObject = new JSONObject();
+        jSONObject.put("title", "updated_test_proj");
+        var xml = XML.toString(jSONObject,"project");
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/projects/1")).header("Content-Type" ,"application/xml").POST(HttpRequest.BodyPublishers.ofString(xml)).build();
+        HttpResponse<String> response_str = client.send(request, HttpResponse.BodyHandlers.ofString());
+        assertEquals(200, response_str.statusCode());
+        System.out.println(response_str.body());
+
+        JSONObject response_json = new JSONObject(response_str.body());
+        assertEquals(response_json.get("title"), "updated_test_proj");
+
+        jSONObject.put("title", "test_proj");
+        request = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/projects/1")).POST(HttpRequest.BodyPublishers.ofString(jSONObject.toString())).build();
+        response_str = client.send(request, HttpResponse.BodyHandlers.ofString());
+    }
+
+    @Test
+    public void project_id_put() throws IOException, InterruptedException {
+        HttpClient client = HttpClient.newHttpClient();
+        JSONObject jSONObject = new JSONObject();
+        jSONObject.put("title", "updated_test_proj");
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/projects/1")).PUT(HttpRequest.BodyPublishers.ofString(jSONObject.toString())).build();
+        HttpResponse<String> response_str = client.send(request, HttpResponse.BodyHandlers.ofString());
+        assertEquals(200, response_str.statusCode());
+        System.out.println(response_str.body());
+
+        JSONObject response_json = new JSONObject(response_str.body());
+        assertEquals(response_json.get("title"), "updated_test_proj");
+
+        jSONObject.put("title", "test_proj");
+        request = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/projects/1")).POST(HttpRequest.BodyPublishers.ofString(jSONObject.toString())).build();
+        response_str = client.send(request, HttpResponse.BodyHandlers.ofString());
+    }
+
+    @Test
+    public void project_id_put_xml() throws IOException, InterruptedException {
+        HttpClient client = HttpClient.newHttpClient();
+        JSONObject jSONObject = new JSONObject();
+        jSONObject.put("title", "updated_test_proj");
+        var xml = XML.toString(jSONObject,"project");
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/projects/1")).header("Content-Type" ,"application/xml").PUT(HttpRequest.BodyPublishers.ofString(xml)).build();        HttpResponse<String> response_str = client.send(request, HttpResponse.BodyHandlers.ofString());
+        assertEquals(200, response_str.statusCode());
+        System.out.println(response_str.body());
+
+        JSONObject response_json = new JSONObject(response_str.body());
+        assertEquals(response_json.get("title"), "updated_test_proj");
+
+        jSONObject.put("title", "test_proj");
+        request = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/projects/1")).POST(HttpRequest.BodyPublishers.ofString(jSONObject.toString())).build();
+        response_str = client.send(request, HttpResponse.BodyHandlers.ofString());
+    }
+
+    @Test
+    public void project_id_delete() throws IOException, InterruptedException {
+        HttpClient client = HttpClient.newHttpClient();
+        JSONObject jSONObject = new JSONObject();
+        
+        jSONObject.put("title", "test_proj");
+        jSONObject.put("description","json payload new proj");
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/projects")).POST(HttpRequest.BodyPublishers.ofString(jSONObject.toString())).build();
+        HttpResponse<String> response_str = client.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println(response_str.body());
+
+        JSONObject response_json = new JSONObject(response_str.body());
+        int newId = Integer.parseInt(response_json.get("id").toString());
+
+        HttpRequest request_del = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/projects/"+newId)).DELETE().build();
+        HttpResponse<String> response_str_del = client.send(request_del, HttpResponse.BodyHandlers.ofString());
+        assertEquals(200, response_str_del.statusCode());
+
+    }
+
+    @Test
+    public void project_id_delete_xml() throws IOException, InterruptedException {
+        HttpClient client = HttpClient.newHttpClient();
+        JSONObject jSONObject = new JSONObject();
+        
+        jSONObject.put("title", "test_proj");
+        jSONObject.put("description","json payload new proj");
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/projects")).POST(HttpRequest.BodyPublishers.ofString(jSONObject.toString())).build();
+        HttpResponse<String> response_str = client.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println(response_str.body());
+
+        JSONObject response_json = new JSONObject(response_str.body());
+        int newId = Integer.parseInt(response_json.get("id").toString());
+
+        HttpRequest request_del = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/projects/"+newId)).header("Content-Type" ,"application/xml").DELETE().build();
+        HttpResponse<String> response_str_del = client.send(request_del, HttpResponse.BodyHandlers.ofString());
+        assertEquals(200, response_str_del.statusCode());
+
+    }
+
+    @Test
+    public void get_projects_id_task() throws IOException, InterruptedException {
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/projects/1/tasks")).GET().build();
+        HttpResponse<String> response_str = client.send(request, HttpResponse.BodyHandlers.ofString());
+        assertEquals(200, response_str.statusCode());
+        System.out.println(response_str.body());
+    }
+
+    @Test
+    public void get_projects_id_task_xml() throws IOException, InterruptedException {
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/projects/1/tasks")).header("Content-Type" ,"application/xml").GET().build();
+        HttpResponse<String> response_str = client.send(request, HttpResponse.BodyHandlers.ofString());
+        assertEquals(200, response_str.statusCode());
+        System.out.println(response_str.body());
+    }
+
+    @Test
+    public void project_id_task_post() throws IOException, InterruptedException {
+        HttpClient client = HttpClient.newHttpClient();
+        JSONObject jSONObject = new JSONObject();
+        jSONObject.put("id", "2");
+        
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/projects/1/tasks")).POST(HttpRequest.BodyPublishers.ofString(jSONObject.toString())).build();
+        HttpResponse<String> response_str = client.send(request, HttpResponse.BodyHandlers.ofString());
+        assertEquals(201, response_str.statusCode());
+        System.out.println(response_str.body());
+    }
+
+    @Test
+    public void project_post_id_task_xml_expected() throws IOException, InterruptedException {
+        HttpClient client = HttpClient.newHttpClient();
+        JSONObject jSONObject = new JSONObject();
+        jSONObject.put("id", "2");
+        var xml = XML.toString(jSONObject,"project");
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/projects/1/tasks")).header("Content-Type" ,"application/xml").POST(HttpRequest.BodyPublishers.ofString(xml)).build();
+        HttpResponse<String> response_str = client.send(request, HttpResponse.BodyHandlers.ofString());
+        assertNotEquals(201, response_str.statusCode());
+        System.out.println(response_str.body());
+    }
+
+    @Test
+    public void project_post_id_task_xml_unexpected() throws IOException, InterruptedException {
+        HttpClient client = HttpClient.newHttpClient();
+        JSONObject jSONObject = new JSONObject();
+        jSONObject.put("id", "2");
+        var xml = XML.toString(jSONObject,"project");
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/projects/1/tasks")).header("Content-Type" ,"application/xml").POST(HttpRequest.BodyPublishers.ofString(xml)).build();
+        HttpResponse<String> response_str = client.send(request, HttpResponse.BodyHandlers.ofString());
+        assertEquals(404, response_str.statusCode());
+        System.out.println(response_str.body());
+    }
+
+    @Test
+    public void project_id_task_delete() throws IOException, InterruptedException {
+        HttpClient client = HttpClient.newHttpClient();
+        JSONObject jSONObject = new JSONObject();
+        jSONObject.put("id", "3");
+        
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/projects/1/tasks")).POST(HttpRequest.BodyPublishers.ofString(jSONObject.toString())).build();
+        HttpResponse<String> response_str = client.send(request, HttpResponse.BodyHandlers.ofString());
+        //assertEquals(201, response_str.statusCode());
+        System.out.println(response_str.body());
+
+        HttpRequest request_del = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/projects/1/tasks/3")).DELETE().build();
+        HttpResponse<String> response_str_del = client.send(request_del, HttpResponse.BodyHandlers.ofString());
+        assertEquals(200, response_str_del.statusCode());
+    }
+
+    @Test
+    public void project_id_task_delete_xml() throws IOException, InterruptedException {
+        HttpClient client = HttpClient.newHttpClient();
+        JSONObject jSONObject = new JSONObject();
+        jSONObject.put("id", "3");
+        
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/projects/1/tasks")).POST(HttpRequest.BodyPublishers.ofString(jSONObject.toString())).build();
+        HttpResponse<String> response_str = client.send(request, HttpResponse.BodyHandlers.ofString());
+        //assertEquals(201, response_str.statusCode());
+        System.out.println(response_str.body());
+
+        HttpRequest request_del = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/projects/1/tasks/3")).header("Content-Type" ,"application/xml").DELETE().build();
+        HttpResponse<String> response_str_del = client.send(request_del, HttpResponse.BodyHandlers.ofString());
+        assertEquals(200, response_str_del.statusCode());
+    }
+
+    @Test
+    public void get_projects_id_categories() throws IOException, InterruptedException {
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/projects/1/categories")).GET().build();
+        HttpResponse<String> response_str = client.send(request, HttpResponse.BodyHandlers.ofString());
+        assertEquals(200, response_str.statusCode());
+        System.out.println(response_str.body());
+    }
+
+    @Test
+    public void get_projects_id_categories_xml() throws IOException, InterruptedException {
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/projects/1/categories")).header("Content-Type" ,"application/xml").GET().build();
+        HttpResponse<String> response_str = client.send(request, HttpResponse.BodyHandlers.ofString());
+        assertEquals(200, response_str.statusCode());
+        System.out.println(response_str.body());
+    }
+
+    @Test
+    public void project_id_categories_post() throws IOException, InterruptedException {
+        HttpClient client = HttpClient.newHttpClient();
+        JSONObject jSONObject = new JSONObject();
+        jSONObject.put("id", "2");
+        
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/projects/1/categories")).POST(HttpRequest.BodyPublishers.ofString(jSONObject.toString())).build();
+        HttpResponse<String> response_str = client.send(request, HttpResponse.BodyHandlers.ofString());
+        assertEquals(201, response_str.statusCode());
+        System.out.println(response_str.body());
+    }
+
+    @Test
+    public void project_post_id_categories_xml_expected() throws IOException, InterruptedException {
+        HttpClient client = HttpClient.newHttpClient();
+        JSONObject jSONObject = new JSONObject();
+        jSONObject.put("id", "2");
+        var xml = XML.toString(jSONObject,"project");
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/projects/1/categories")).header("Content-Type" ,"application/xml").POST(HttpRequest.BodyPublishers.ofString(xml)).build();
+        HttpResponse<String> response_str = client.send(request, HttpResponse.BodyHandlers.ofString());
+        assertNotEquals(201, response_str.statusCode());
+        System.out.println(response_str.body());
+    }
+
+    @Test
+    public void project_post_id_categories_xml_unexpected() throws IOException, InterruptedException {
+        HttpClient client = HttpClient.newHttpClient();
+        JSONObject jSONObject = new JSONObject();
+        jSONObject.put("id", "2");
+        var xml = XML.toString(jSONObject,"project");
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/projects/1/categories")).header("Content-Type" ,"application/xml").POST(HttpRequest.BodyPublishers.ofString(xml)).build();
+        HttpResponse<String> response_str = client.send(request, HttpResponse.BodyHandlers.ofString());
+        assertEquals(404, response_str.statusCode());
+        System.out.println(response_str.body());
+    }
+
+    @Test
+    public void project_id_categories_delete() throws IOException, InterruptedException {
+        HttpClient client = HttpClient.newHttpClient();
+        JSONObject jSONObject = new JSONObject();
+        jSONObject.put("id", "2");
+        
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/projects/1/categories")).POST(HttpRequest.BodyPublishers.ofString(jSONObject.toString())).build();
+        HttpResponse<String> response_str = client.send(request, HttpResponse.BodyHandlers.ofString());
+        assertEquals(201, response_str.statusCode());
+        System.out.println(response_str.body());
+
+        HttpRequest request_del = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/projects/1/categories/2")).DELETE().build();
+        HttpResponse<String> response_str_del = client.send(request_del, HttpResponse.BodyHandlers.ofString());
+        assertEquals(200, response_str_del.statusCode());
+    }
+
+    @Test
+    public void project_id_categories_delete_xml() throws IOException, InterruptedException {
+        HttpClient client = HttpClient.newHttpClient();
+        JSONObject jSONObject = new JSONObject();
+        jSONObject.put("id", "2");
+        
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/projects/1/categories")).POST(HttpRequest.BodyPublishers.ofString(jSONObject.toString())).build();
+        HttpResponse<String> response_str = client.send(request, HttpResponse.BodyHandlers.ofString());
+        assertEquals(201, response_str.statusCode());
+        System.out.println(response_str.body());
+
+        HttpRequest request_del = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/projects/1/categories/2")).header("Content-Type" ,"application/xml").DELETE().build();
+        HttpResponse<String> response_str_del = client.send(request_del, HttpResponse.BodyHandlers.ofString());
+        assertEquals(200, response_str_del.statusCode());
+    }
+
 }
