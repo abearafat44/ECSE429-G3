@@ -1078,7 +1078,7 @@ public class tests {
         
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/projects/1/tasks")).POST(HttpRequest.BodyPublishers.ofString(jSONObject.toString())).build();
         HttpResponse<String> response_str = client.send(request, HttpResponse.BodyHandlers.ofString());
-        //assertEquals(201, response_str.statusCode());
+        assertEquals(201, response_str.statusCode());
         System.out.println(response_str.body());
 
         HttpRequest request_del = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/projects/1/tasks/3")).DELETE().build();
@@ -1094,7 +1094,7 @@ public class tests {
         
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/projects/1/tasks")).POST(HttpRequest.BodyPublishers.ofString(jSONObject.toString())).build();
         HttpResponse<String> response_str = client.send(request, HttpResponse.BodyHandlers.ofString());
-        //assertEquals(201, response_str.statusCode());
+        assertEquals(201, response_str.statusCode());
         System.out.println(response_str.body());
 
         HttpRequest request_del = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/projects/1/tasks/3")).header("Content-Type" ,"application/xml").DELETE().build();
@@ -1186,6 +1186,31 @@ public class tests {
         HttpRequest request_del = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/projects/1/categories/2")).header("Content-Type" ,"application/xml").DELETE().build();
         HttpResponse<String> response_str_del = client.send(request_del, HttpResponse.BodyHandlers.ofString());
         assertEquals(200, response_str_del.statusCode());
+    }
+
+    @Test // Problem in the JSON: the right type is not used at the right place for multiple fields
+    public void malformed_json_payload_test() throws IOException, InterruptedException {
+        HttpClient client = HttpClient.newHttpClient();
+        JSONObject jSONObject = new JSONObject();
+        jSONObject.put("title", true);
+        jSONObject.put("doneStatus","false");
+        jSONObject.put("description",55);
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/todos/2")).POST(HttpRequest.BodyPublishers.ofString(jSONObject.toString())).build();
+        HttpResponse<String> response_str = client.send(request, HttpResponse.BodyHandlers.ofString());
+        assertEquals(400, response_str.statusCode());      
+    }
+
+    @Test // malformed XML payload: the tag "todo" is not put at the start
+    public void malformed_xml_payload_test() throws IOException, InterruptedException {
+        HttpClient client = HttpClient.newHttpClient();
+        JSONObject jSONObject = new JSONObject();
+        jSONObject.put("title", true);
+        jSONObject.put("doneStatus","false");
+        jSONObject.put("description",55);
+        String xml = XML.toString(jSONObject);
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/todos/2")).headers("Content-Type" ,"application/xml").POST(HttpRequest.BodyPublishers.ofString(jSONObject.toString())).build();
+        HttpResponse<String> response_str = client.send(request, HttpResponse.BodyHandlers.ofString());
+        assertEquals(400, response_str.statusCode());   
     }
 
 }

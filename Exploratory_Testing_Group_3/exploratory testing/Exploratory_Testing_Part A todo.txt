@@ -1,0 +1,502 @@
+CHARTER
+--------------------------------------------
+Identify capabilities and areas of potential instability of the “rest
+api todo list manager”.
+Identify documented and undocumented “rest api todo list manager”
+capabilities.
+For each capability create a script or small program to demonstrate
+the capability.
+Exercise each capability identified with data typical to the intended
+use of the application.
+
+ENVIRONMENT
+--------------------------------------------
+OS: Windows 11
+Screen resolution: 2560x1440
+Release version: runTodoManagerRestAPI-1.5.5.jar
+Testing tool: Postman
+AREA
+--------------------------------------------
+Main functions and capabilites of todos
+
+TESTERS
+--------------------------------------------
+James Willems
+james.willems@mail.mcgill.ca
+260921223
+
+Nikhil Jebesh Moses
+260822456
+
+TASK
+--------------------------------------------
+Duration: 45 minutes
+Start: 11:10am, Oct. 18, 2023
+
+NOTES
+
+11:10 am
+Ran the commandjava -jar .\runTodoManagerRestAPI-1.5.5.jar with output
+Valid Model Names -model=
+todoManager
+Model todoManager : Number of app versions available (e.g. -version=2, -versionName=profile1) are: 4
+1 - v0 : prototype
+2 - v1 : non compressed relationships with guids
+3 - v2 : compressed relationships with guids
+4 - v3 : compressed relationships with ids
+SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+Using model todoManager
+Will configure app as release version v3 : compressed relationships with ids
+Running on 4567
+ e.g. http://localhost:4567
+
+11:12 am
+Ran http://localhost:4567/docs
+Got access to the documentation of the REST API provided with the application
+Proceeded to read about the TODO part with expected inputs, outputs and endpoints
+
+11:17 am
+Tested GET http://localhost:4567/todo
+Code: 200 Success
+Returned {
+    "todos": [
+        {
+            "id": "2",
+            "title": "file paperwork",
+            "doneStatus": "false",
+            "description": "",
+            "tasksof": [
+                {
+                    "id": "1"
+                }
+            ]
+        },
+        {
+            "id": "1",
+            "title": "scan paperwork",
+            "doneStatus": "false",
+            "description": "",
+            "tasksof": [
+                {
+                    "id": "1"
+                }
+            ],
+            "categories": [
+                {
+                    "id": "1"
+                }
+            ]
+        }
+    ]
+}
+
+11:19 am
+Tested GET http://localhost:4567/todo/1
+Code: 200 Success
+Returned:{
+    "todos": [
+        {
+            "id": "1",
+            "title": "scan paperwork",
+            "doneStatus": "false",
+            "description": "",
+            "tasksof": [
+                {
+                    "id": "1"
+                }
+            ],
+            "categories": [
+                {
+                    "id": "1"
+                }
+            ]
+        }
+    ]
+}
+
+11:20 am
+Tested GET http://localhost:4567/todo/2
+Code: 200 Success
+Returned: {
+    "todos": [
+        {
+            "id": "2",
+            "title": "file paperwork",
+            "doneStatus": "false",
+            "description": "",
+            "tasksof": [
+                {
+                    "id": "1"
+                }
+            ]
+        }
+    ]
+}
+
+11:23 am
+Tested POST http://localhost:4567/todos
+Input: {
+    "title": "hola",
+    "doneStatus": "false",
+    "description":"testing"
+}
+Code:400 Bad Request
+Output: {
+    "errorMessages": [
+        "Failed Validation: doneStatus should be BOOLEAN"
+    ]
+}
+
+11:24 
+Tested POST http://localhost:4567/todos
+Input: {
+    "title": "hola",
+    "doneStatus": false,
+    "description":"testing"
+}
+Code:201 created
+Output: {
+    "id": "4",
+    "title": "hola",
+    "doneStatus": "false",
+    "description": "testing"
+}
+11:26 am
+Tested increment in id when wrongful POST
+Resetted the database
+{
+    "title": "hola",
+    "doneStatus": "false",
+    "description":"testing"
+} four times followed by
+
+{
+    "title": "hola",
+    "doneStatus": false,
+    "description":"testing"
+}
+Code: 400 * 4 then 201 created
+
+Output:
+{
+    "id": "7",
+    "title": "hola",
+    "doneStatus": "false",
+    "description": "testing"
+}
+
+11:30 am
+Tested POST http://localhost:4567/todos/1
+Input:
+
+{
+    "title": "hola que tal",
+    "doneStatus": false,
+    "description":"testing"
+}
+
+Code: 200 OK
+Output: 
+{
+    "id": "1",
+    "title": "hola que tal",
+    "doneStatus": "false",
+    "description": "testing",
+    "tasksof": [
+        {
+            "id": "1"
+        }
+    ],
+    "categories": [
+        {
+            "id": "1"
+        }
+    ]
+}
+
+11:32 am
+Tested POST http://localhost:4567/todos/1
+Input:
+{
+    "id": "1",
+    "title": "muy bien",
+    "doneStatus": "false",
+    "description": "testing",
+    "tasksof": [
+        {
+            "id": "1"
+        }
+    ],
+    "categories": [
+        {
+            "id": "1"
+        }
+    ]
+}
+Code 200 OK
+Output: 
+{
+    "id": "1",
+    "title": "muy bien",
+    "doneStatus": "false",
+    "description": "testing",
+    "tasksof": [
+        {
+            "id": "1"
+        }
+    ],
+    "categories": [
+        {
+            "id": "1"
+        }
+    ]
+}
+
+11:35 am
+Tested PUT on http://localhost:4567/todos/1
+Input: 
+{
+    "title": "muy bien",
+    "doneStatus": false,
+    "description" : "spanish"
+}
+Code: 200 Ok
+Output:
+{
+    "id": "1",
+    "title": "muy bien",
+    "doneStatus": "false",
+    "description": "spanish"
+}
+
+11:37 am
+Tested GET on http://localhost:4567/todo to check if categories and projects were still there
+Code 200 OK
+Output:
+{
+    "todos": [
+        {
+            "id": "1",
+            "title": "muy bien",
+            "doneStatus": "false",
+            "description": "spanish"
+        },
+        {
+            "id": "7",
+            "title": "hola",
+            "doneStatus": "false",
+            "description": "testing"
+        },
+        {
+            "id": "2",
+            "title": "file paperwork",
+            "doneStatus": "false",
+            "description": "",
+            "tasksof": [
+                {
+                    "id": "1"
+                }
+            ]
+        }
+    ]
+}
+Figured out PUT defaults fields not mentioned in request while POST leaves them as is
+ 
+11:40 am
+Tested DELETE on http://localhost:4567/todo/7
+Code: 200 OK
+Followed by GET http://localhost:4567/todo
+Output:
+{
+    "todos": [
+        {
+            "id": "1",
+            "title": "muy bien",
+            "doneStatus": "false",
+            "description": "spanish"
+        },
+        {
+            "id": "2",
+            "title": "file paperwork",
+            "doneStatus": "false",
+            "description": "",
+            "tasksof": [
+                {
+                    "id": "1"
+                }
+            ]
+        }
+    ]
+}
+
+11:43 am
+Reset database, then teste GET http://localhost:4567/1/tasksof
+Code 200 OK
+Output:
+{
+    "projects": [
+        {
+            "id": "1",
+            "title": "Office Work",
+            "completed": "false",
+            "active": "false",
+            "description": "",
+            "tasks": [
+                {
+                    "id": "2"
+                },
+                {
+                    "id": "1"
+                }
+            ]
+        }
+    ]
+}
+
+11:47 am
+Created new project to test POST
+Input: {
+    "title": "muy bien",
+    "completed": false,
+    "active" : false,
+    "description" : "spanish"
+}
+Code: 201 Created
+Output:{
+    "id": "2",
+    "title": "muy bien",
+    "completed": "false",
+    "active": "false",
+    "description": "spanish"
+}
+Did POST http://localhost:4567/todos/1/tasksof
+Input:
+{
+    "id":"2"
+}
+Output: 201 Created
+Did GET to check
+GET http://localhost:4567/todo/1/tasksof
+Code 200 OK 
+Output:
+{
+    "projects": [
+        {
+            "id": "2",
+            "title": "muy bien",
+            "completed": "false",
+            "active": "false",
+            "description": "spanish",
+            "tasks": [
+                {
+                    "id": "1"
+                }
+            ]
+        },
+        {
+            "id": "1",
+            "title": "Office Work",
+            "completed": "false",
+            "active": "false",
+            "description": "",
+            "tasks": [
+                {
+                    "id": "2"
+                },
+                {
+                    "id": "1"
+                }
+            ]
+        }
+    ]
+}
+
+11:50 am
+Tried DELETE on http://localhost:4567/1/tasksof/2
+Code 200 OK
+GET to check:
+{
+    "projects": [
+        {
+            "id": "1",
+            "title": "Office Work",
+            "completed": "false",
+            "active": "false",
+            "description": "",
+            "tasks": [
+                {
+                    "id": "2"
+                },
+                {
+                    "id": "1"
+                }
+            ]
+        }
+    ]
+}
+GET projects:
+{
+    "projects": [
+        {
+            "id": "1",
+            "title": "Office Work",
+            "completed": "false",
+            "active": "false",
+            "description": "",
+            "tasks": [
+                {
+                    "id": "2"
+                },
+                {
+                    "id": "1"
+                }
+            ]
+        },
+        {
+            "id": "2",
+            "title": "muy bien",
+            "completed": "false",
+            "active": "false",
+            "description": "spanish"
+        }
+    ]
+}
+So works
+
+11:52 am
+Reset database to deal with categories
+GET http://localhost:4567/todos/2/categories
+Code 200 OK
+Output : 
+{
+    "categories": []
+}
+
+11:53 am
+POST http://localhost:4567/todos/2/categories
+Input:
+{
+    "id":"1"
+}
+Code 201 Created
+GET to check: http://localhost:4567/todos/2/categories
+Output:
+{
+    "categories": [
+        {
+            "id": "1",
+            "title": "Office",
+            "description": ""
+        }
+    ]
+}
+
+11:55 am
+Technically end but wanted to try DELETE
+Code 200 OK
+GET to check: Output: 
+{
+    "categories": []
+}
