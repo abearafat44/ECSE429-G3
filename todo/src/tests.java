@@ -19,11 +19,12 @@ import javax.swing.JOptionPane;
 import org.json.*;
 
 import org.junit.Test;
+import org.junit.runner.OrderWith;
 
-
+@OrderWith(RandomOrder.class)
 public class tests {
 
-        @Test
+    @Test
     public void get_todos() throws IOException, InterruptedException {
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/todos")).GET().build();
