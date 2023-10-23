@@ -1,0 +1,150 @@
+CHARTER
+--------------------------------------------
+Identify capabilities and areas of potential instability of the “rest
+api todo list manager”.
+Identify documented and undocumented “rest api todo list manager”
+capabilities.
+For each capability create a script or small program to demonstrate
+the capability.
+Exercise each capability identified with data typical to the intended
+use of the application.
+
+ENVIRONMENT
+--------------------------------------------
+OS: Windows 10
+Screen resolution: 2560x1440
+Release version: runTodoManagerRestAPI-1.5.5.jar
+Testing tool: Postman
+AREA
+--------------------------------------------
+Main functions and capabilites of categories
+
+TESTERS
+--------------------------------------------
+David Hu
+david.hu@mail.mcgill.ca
+260986407
+
+TASK
+--------------------------------------------
+Duration: 45 minutes
+Start: 8:10pm, Oct. 19, 2023
+
+NOTES
+--------------------------------------------
+8:10
+Ran java -jar .\runTodoManagerRestAPI-1.5.5.jar with output
+Valid Model Names -model=
+todoManager
+Model todoManager : Number of app versions available (e.g. -version=2, -versionName=profile1) are: 4
+1 - v0 : prototype
+2 - v1 : non compressed relationships with guids
+3 - v2 : compressed relationships with guids
+4 - v3 : compressed relationships with ids
+SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+Using model todoManager
+Will configure app as release version v3 : compressed relationships with ids
+Running on 4567
+ e.g. http://localhost:4567
+
+8:14
+Tested GET http://localhost:4567/categories
+SUCCESS
+Returned the two existing categories correctly with id, title and description
+Description seems to be empty for both initial categories
+
+8:17
+Tested HEAD http://localhost:4567/categories
+SUCCESS
+Returned the 4 headers: Date, Content-type, Transfer-Encoding and Server
+
+8:18
+Tested POST http://localhost:4567/categories?description=mollit%20anim%20id%20est%20l
+ERROR
+Returned error message requesting the title field.
+
+8:21
+Tested POST http://localhost:4567/categories?description=mollit%20anim%20id%20est%20l&title=test%20title
+ERROR
+Returned error message requesting the title field. Suspicion that query parameters are not accepted by the program even if documented as such.
+
+8:24
+Tested POST http://localhost:4567/categories with parameters in the body instead as JSON format
+SUCCESS
+Returns the created category
+It seems to be able to accept new categories, but not as query parameters
+
+8:26
+Tested GET http://localhost:4567/categories/:id with id 1
+SUCCESS
+Returned category list with id 1, title: "Office".
+Description is still empty
+
+8:29
+Tested HEAD http://localhost:4567/categories/:id with id 1
+SUCCESS
+Returned the 4 headers: Date, Content-type, Transfer-Encoding and Server
+
+8:31
+Tested POST http://localhost:4567/categories/:id with id 1 with a body containing title and description
+SUCCESS
+Updated the existing category with id 1 with the values in the body.
+Running GET http://localhost:4567/categories shows the updated category with a non-empty description
+
+
+8:34
+Tested PUT http://localhost:4567/categories/:id with id 1 with a body containing a different title and description
+SUCCESS
+Updated the existing category with id 1 with the values in the body.
+Running GET http://localhost:4567/categories shows the updated category
+
+8:36
+Tested DELETE http://localhost:4567/categories/9 where id 9 is the id of the category created
+SUCCESS
+No output message
+Running GET http://localhost:4567/categories shows the category does not exist anymore
+
+8:40
+Tested GET http://localhost:4567/categories/1/projects
+SUCCESS
+The returned project list is empty, likely because there are no projects created under the category with id 1
+
+8:41
+Tested HEAD http://localhost:4567/categories/1/projects
+SUCCESS
+Returned the 4 headers: Date, Content-type, Transfer-Encoding and Server
+
+8:44
+Tested POST http://localhost:4567/categories/1/projects
+SUCCESS
+Returns the information of the project created under category 1
+Running GET http://localhost:4567/categories/1/projects now has the project created in the list of projects under category 1
+
+8:46
+Tested DELETE http://localhost:4567/categories/1/projects/3 where 3 is the id of the project created
+SUCCESS
+Running http://localhost:4567/categories/1/projects shows an empty project list, successfully deleting it.
+
+8:48
+Tested GET http://localhost:4567/categories/1/todos
+SUCCESS
+Returns a list of empty todos for the category with id 1, likely since there are no todos created for the category yet.
+
+8:51
+Tested HEAD http://localhost:4567/categories/1/todos
+SUCCESS
+Returned the 4 headers: Date, Content-type, Transfer-Encoding and Server
+
+8:53
+Tested POST http://localhost:4567/categories/1/todos
+SUCCESS
+Creates a todo for the category with id 1, gives the todo an id of 3
+Running GET http://localhost:4567/categories/1/todos shows the newly created todo in the list of todos
+
+8:55
+Tested DELETE http://localhost:4567/categories/1/todos/3
+SUCCESS
+Deletes the todo from the category
+Running GET http://localhost:4567/categories/1/todos shows the empty list of todos

@@ -1,0 +1,325 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2636
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\froman\fcharset0 Times-Roman;\f2\froman\fcharset0 Times-Bold;
+}
+{\colortbl;\red255\green255\blue255;\red255\green255\blue254;\red0\green0\blue0;\red144\green1\blue18;
+\red9\green60\blue148;\red255\green255\blue254;}
+{\*\expandedcolortbl;;\cssrgb\c100000\c100000\c99608;\cssrgb\c0\c0\c0;\cssrgb\c63922\c8235\c8235;
+\cssrgb\c1569\c31765\c64706;\cssrgb\c100000\c100000\c99608;}
+\margl1440\margr1440\vieww8520\viewh8400\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 CHARTER\
+--------------------------------------------\
+Identify capabilities and areas of potential instability of the \'93rest\
+api todo list manager\'94.\
+Identify documented and undocumented \'93rest api todo list manager\'94\
+capabilities.\
+For each capability create a script or small program to demonstrate\
+the capability.\
+Exercise each capability identified with data typical to the intended\
+use of the application.\
+\
+ENVIRONMENT\
+--------------------------------------------\
+OS: macOS 12.2.1\
+Screen resolution: 2560x1600\
+Release version: runTodoManagerRestAPI-1.5.5.jar\
+Testing tool: Postman\
+AREA\
+--------------------------------------------\
+Main functions and capabilities of todos\
+\
+TESTERS\
+--------------------------------------------\
+Abe Arafat\
+abdullah.arafat@mail.mcgill.ca\
+260900431\
+\
+\
+\
+http://localhost:4567/projects\
+\
+GET /projects\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f1 \cf0 \cb2 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec3 \{\cb1 \
+\cb2     \cf4 \strokec4 "projects"\cf0 \strokec3 : [\cb1 \
+\cb2         \{\cb1 \
+\cb2             \cf4 \strokec4 "id"\cf0 \strokec3 : \cf5 \strokec5 "1"\cf0 \strokec3 ,\cb1 \
+\cb2             \cf4 \strokec4 "title"\cf0 \strokec3 : \cf5 \strokec5 "Office Work"\cf0 \strokec3 ,\cb1 \
+\cb2             \cf4 \strokec4 "completed"\cf0 \strokec3 : \cf5 \strokec5 "false"\cf0 \strokec3 ,\cb1 \
+\cb2             \cf4 \strokec4 "active"\cf0 \strokec3 : \cf5 \strokec5 "false"\cf0 \strokec3 ,\cb1 \
+\cb2             \cf4 \strokec4 "description"\cf0 \strokec3 : \cf5 \strokec5 ""\cf0 \strokec3 ,\cb1 \
+\cb2             \cf4 \strokec4 "tasks"\cf0 \strokec3 : [\cb1 \
+\cb2                 \{\cb1 \
+\cb2                     \cf4 \strokec4 "id"\cf0 \strokec3 : \cf5 \strokec5 "1"\cf0 \cb1 \strokec3 \
+\cb2                 \},\cb1 \
+\cb2                 \{\cb1 \
+\cb2                     \cf4 \strokec4 "id"\cf0 \strokec3 : \cf5 \strokec5 "2"\cf0 \cb1 \strokec3 \
+\cb2                 \}\cb1 \
+\cb2             ]\cb1 \
+\cb2         \}\cb1 \
+\cb2     ]\cb1 \
+\cb2 \}\cb1 \
+\
+After posting empty project, GET /projects\
+\
+\cb2 \{\cb1 \
+\cb2     \cf4 \strokec4 "projects"\cf0 \strokec3 : [\cb1 \
+\cb2         \{\cb1 \
+\cb2             \cf4 \strokec4 "id"\cf0 \strokec3 : \cf5 \strokec5 "1"\cf0 \strokec3 ,\cb1 \
+\cb2             \cf4 \strokec4 "title"\cf0 \strokec3 : \cf5 \strokec5 "Office Work"\cf0 \strokec3 ,\cb1 \
+\cb2             \cf4 \strokec4 "completed"\cf0 \strokec3 : \cf5 \strokec5 "false"\cf0 \strokec3 ,\cb1 \
+\cb2             \cf4 \strokec4 "active"\cf0 \strokec3 : \cf5 \strokec5 "false"\cf0 \strokec3 ,\cb1 \
+\cb2             \cf4 \strokec4 "description"\cf0 \strokec3 : \cf5 \strokec5 ""\cf0 \strokec3 ,\cb1 \
+\cb2             \cf4 \strokec4 "tasks"\cf0 \strokec3 : [\cb1 \
+\cb2                 \{\cb1 \
+\cb2                     \cf4 \strokec4 "id"\cf0 \strokec3 : \cf5 \strokec5 "1"\cf0 \cb1 \strokec3 \
+\cb2                 \},\cb1 \
+\cb2                 \{\cb1 \
+\cb2                     \cf4 \strokec4 "id"\cf0 \strokec3 : \cf5 \strokec5 "2"\cf0 \cb1 \strokec3 \
+\cb2                 \}\cb1 \
+\cb2             ]\cb1 \
+\cb2         \},\cb1 \
+\cb2         \{\cb1 \
+\cb2             \cf4 \strokec4 "id"\cf0 \strokec3 : \cf5 \strokec5 "2"\cf0 \strokec3 ,\cb1 \
+\cb2             \cf4 \strokec4 "title"\cf0 \strokec3 : \cf5 \strokec5 ""\cf0 \strokec3 ,\cb1 \
+\cb2             \cf4 \strokec4 "completed"\cf0 \strokec3 : \cf5 \strokec5 "false"\cf0 \strokec3 ,\cb1 \
+\cb2             \cf4 \strokec4 "active"\cf0 \strokec3 : \cf5 \strokec5 "false"\cf0 \strokec3 ,\cb1 \
+\cb2             \cf4 \strokec4 "description"\cf0 \strokec3 : \cf5 \strokec5 ""\cf0 \cb1 \strokec3 \
+\cb2         \}\cb1 \
+\cb2     ]\cb1 \
+\cb2 \}\cb1 \
+\
+POSTed project with sample input from docs, returned error 400 BAD REQUEST because of quotes around boolean values (JSON)\
+Removed quotes, successfully added project, but noticed that id incremented both times.\
+Did a GET, did not see any ID=4, only 5, and 5 is above 2 and 3, which are empty.\
+\
+\cb2 \{\cb1 \
+\cb2     \cf4 \strokec4 "projects"\cf0 \strokec3 : [\cb1 \
+\cb2         \{\cb1 \
+\cb2             \cf4 \strokec4 "id"\cf0 \strokec3 : \cf5 \strokec5 "1"\cf0 \strokec3 ,\cb1 \
+\cb2             \cf4 \strokec4 "title"\cf0 \strokec3 : \cf5 \strokec5 "Office Work"\cf0 \strokec3 ,\cb1 \
+\cb2             \cf4 \strokec4 "completed"\cf0 \strokec3 : \cf5 \strokec5 "false"\cf0 \strokec3 ,\cb1 \
+\cb2             \cf4 \strokec4 "active"\cf0 \strokec3 : \cf5 \strokec5 "false"\cf0 \strokec3 ,\cb1 \
+\cb2             \cf4 \strokec4 "description"\cf0 \strokec3 : \cf5 \strokec5 ""\cf0 \strokec3 ,\cb1 \
+\cb2             \cf4 \strokec4 "tasks"\cf0 \strokec3 : [\cb1 \
+\cb2                 \{\cb1 \
+\cb2                     \cf4 \strokec4 "id"\cf0 \strokec3 : \cf5 \strokec5 "1"\cf0 \cb1 \strokec3 \
+\cb2                 \},\cb1 \
+\cb2                 \{\cb1 \
+\cb2                     \cf4 \strokec4 "id"\cf0 \strokec3 : \cf5 \strokec5 "2"\cf0 \cb1 \strokec3 \
+\cb2                 \}\cb1 \
+\cb2             ]\cb1 \
+\cb2         \},\cb1 \
+\cb2         \{\cb1 \
+\cb2             \cf4 \strokec4 "id"\cf0 \strokec3 : \cf5 \strokec5 "5"\cf0 \strokec3 ,\cb1 \
+\cb2             \cf4 \strokec4 "title"\cf0 \strokec3 : \cf5 \strokec5 "voluptate velit esse"\cf0 \strokec3 ,\cb1 \
+\cb2             \cf4 \strokec4 "completed"\cf0 \strokec3 : \cf5 \strokec5 "true"\cf0 \strokec3 ,\cb1 \
+\cb2             \cf4 \strokec4 "active"\cf0 \strokec3 : \cf5 \strokec5 "true"\cf0 \strokec3 ,\cb1 \
+\cb2             \cf4 \strokec4 "description"\cf0 \strokec3 : \cf5 \strokec5 "smod tempor incididu"\cf0 \cb1 \strokec3 \
+\cb2         \},\cb1 \
+\cb2         \{\cb1 \
+\cb2             \cf4 \strokec4 "id"\cf0 \strokec3 : \cf5 \strokec5 "2"\cf0 \strokec3 ,\cb1 \
+\cb2             \cf4 \strokec4 "title"\cf0 \strokec3 : \cf5 \strokec5 ""\cf0 \strokec3 ,\cb1 \
+\cb2             \cf4 \strokec4 "completed"\cf0 \strokec3 : \cf5 \strokec5 "false"\cf0 \strokec3 ,\cb1 \
+\cb2             \cf4 \strokec4 "active"\cf0 \strokec3 : \cf5 \strokec5 "false"\cf0 \strokec3 ,\cb1 \
+\cb2             \cf4 \strokec4 "description"\cf0 \strokec3 : \cf5 \strokec5 ""\cf0 \cb1 \strokec3 \
+\cb2         \},\cb1 \
+\cb2         \{\cb1 \
+\cb2             \cf4 \strokec4 "id"\cf0 \strokec3 : \cf5 \strokec5 "3"\cf0 \strokec3 ,\cb1 \
+\cb2             \cf4 \strokec4 "title"\cf0 \strokec3 : \cf5 \strokec5 ""\cf0 \strokec3 ,\cb1 \
+\cb2             \cf4 \strokec4 "completed"\cf0 \strokec3 : \cf5 \strokec5 "false"\cf0 \strokec3 ,\cb1 \
+\cb2             \cf4 \strokec4 "active"\cf0 \strokec3 : \cf5 \strokec5 "false"\cf0 \strokec3 ,\cb1 \
+\cb2             \cf4 \strokec4 "description"\cf0 \strokec3 : \cf5 \strokec5 ""\cf0 \cb1 \strokec3 \
+\cb2         \}\cb1 \
+\cb2     ]\cb1 \
+\cb2 \}\cb1 \
+\
+POSTing another project using the same input creates a second project with incremented ID\
+\
+\pard\pardeftab720\partightenfactor0
+\cf0 \outl0\strokewidth0 PUT /projects returns error 405 method not allowed\
+\
+DELETE /projects returns error 405 method not allowed\
+\
+HEAD /projects returns 200 OK with date, content-type, transfer-encoding, server\
+\
+\outl0\strokewidth0 \strokec3 GET /projects/1 \
+\pard\pardeftab720\partightenfactor0
+\cf0 \
+\pard\pardeftab720\partightenfactor0
+\cf0 \cb2 \{\cb1 \
+\cb2     \cf4 \strokec4 "projects"\cf0 \strokec3 : [\cb1 \
+\cb2         \{\cb1 \
+\cb2             \cf4 \strokec4 "id"\cf0 \strokec3 : \cf5 \strokec5 "1"\cf0 \strokec3 ,\cb1 \
+\cb2             \cf4 \strokec4 "title"\cf0 \strokec3 : \cf5 \strokec5 "Office Work"\cf0 \strokec3 ,\cb1 \
+\cb2             \cf4 \strokec4 "completed"\cf0 \strokec3 : \cf5 \strokec5 "false"\cf0 \strokec3 ,\cb1 \
+\cb2             \cf4 \strokec4 "active"\cf0 \strokec3 : \cf5 \strokec5 "false"\cf0 \strokec3 ,\cb1 \
+\cb2             \cf4 \strokec4 "description"\cf0 \strokec3 : \cf5 \strokec5 ""\cf0 \strokec3 ,\cb1 \
+\cb2             \cf4 \strokec4 "tasks"\cf0 \strokec3 : [\cb1 \
+\cb2                 \{\cb1 \
+\cb2                     \cf4 \strokec4 "id"\cf0 \strokec3 : \cf5 \strokec5 "1"\cf0 \cb1 \strokec3 \
+\cb2                 \},\cb1 \
+\cb2                 \{\cb1 \
+\cb2                     \cf4 \strokec4 "id"\cf0 \strokec3 : \cf5 \strokec5 "2"\cf0 \cb1 \strokec3 \
+\cb2                 \}\cb1 \
+\cb2             ]\cb1 \
+\cb2         \}\cb1 \
+\cb2     ]\cb1 \
+\cb2 \}\
+\
+PUT and POST /projects/:id have the same description (which has grammar mistakes)  but the specific wording for code 200 differs\
+\
+PUT /projects/1 with input \
+\
+\{\cb1 \
+\cb2   \cf4 \strokec4 "active"\cf0 \strokec3 : 
+\f2\b \cf5 \cb2 \strokec5 true
+\f1\b0 \cf0 \cb2 \strokec3 ,\cb1 \
+\cb2   \cf4 \strokec4 "description"\cf0 \strokec3 : \cf5 \strokec5 "now active"\cf0 \cb1 \strokec3 \
+\cb2 \}\cb1 \
+\cb2 \
+returned:\
+\
+\{\cb1 \
+\cb2     \cf4 \strokec4 "id"\cf0 \strokec3 : \cf5 \strokec5 "1"\cf0 \strokec3 ,\cb1 \
+\cb2     \cf4 \strokec4 "title"\cf0 \strokec3 : \cf5 \strokec5 ""\cf0 \strokec3 ,\cb1 \
+\cb2     \cf4 \strokec4 "completed"\cf0 \strokec3 : \cf5 \strokec5 "false"\cf0 \strokec3 ,\cb1 \
+\cb2     \cf4 \strokec4 "active"\cf0 \strokec3 : \cf5 \strokec5 "true"\cf0 \strokec3 ,\cb1 \
+\cb2     \cf4 \strokec4 "description"\cf0 \strokec3 : \cf5 \strokec5 "now active"\cf0 \cb1 \strokec3 \
+\cb2 \}\cb1 \
+\cb2 \
+It deleted the title of the project, seems to return everything to default except specified fields.\
+\
+I PUT with input\
+\
+\{\cb1 \
+\cb2   \cf4 \strokec4 "title"\cf0 \strokec3 : \cf5 \strokec5 "Office Work"\cf0 \strokec3 ,\cb1 \
+\cb2   \cf4 \strokec4 "active"\cf0 \strokec3 : 
+\f2\b \cf5 \cb2 \strokec5 true
+\f1\b0 \cf0 \cb2 \strokec3 ,\cb1 \
+\cb2   \cf4 \strokec4 "description"\cf0 \strokec3 : \cf5 \strokec5 "now active"\cf0 \cb1 \strokec3 \
+\cb2 \}\cb1 \
+\cb2 \
+And it re-added the title, output:\
+\
+\{\cb1 \
+\cb2     \cf4 \strokec4 "id"\cf0 \strokec3 : \cf5 \strokec5 "1"\cf0 \strokec3 ,\cb1 \
+\cb2     \cf4 \strokec4 "title"\cf0 \strokec3 : \cf5 \strokec5 "Office Work"\cf0 \strokec3 ,\cb1 \
+\cb2     \cf4 \strokec4 "completed"\cf0 \strokec3 : \cf5 \strokec5 "false"\cf0 \strokec3 ,\cb1 \
+\cb2     \cf4 \strokec4 "active"\cf0 \strokec3 : \cf5 \strokec5 "true"\cf0 \strokec3 ,\cb1 \
+\cb2     \cf4 \strokec4 "description"\cf0 \strokec3 : \cf5 \strokec5 "now active"\cf0 \cb1 \strokec3 \
+\cb2 \}\
+\
+Using POST, I update only specified fields without impacting others.\cb1 \
+\cb2 \
+This means that it is inaccurate to have the same description for post and put in documentation.\
+\
+Using DELETE projects/:id works, as I looked at GET /projects and the specified IDs were no longer there\
+\
+At this point I shutdown and reran the database. \
+\
+GET projects/1/tasks outputs\
+\
+\{\cb1 \
+\cb2     \cf4 \strokec4 "todos"\cf0 \strokec3 : [\cb1 \
+\cb2         \{\cb1 \
+\cb2             \cf4 \strokec4 "id"\cf0 \strokec3 : \cf5 \strokec5 "2"\cf0 \strokec3 ,\cb1 \
+\cb2             \cf4 \strokec4 "title"\cf0 \strokec3 : \cf5 \strokec5 "file paperwork"\cf0 \strokec3 ,\cb1 \
+\cb2             \cf4 \strokec4 "doneStatus"\cf0 \strokec3 : \cf5 \strokec5 "false"\cf0 \strokec3 ,\cb1 \
+\cb2             \cf4 \strokec4 "description"\cf0 \strokec3 : \cf5 \strokec5 ""\cf0 \strokec3 ,\cb1 \
+\cb2             \cf4 \strokec4 "tasksof"\cf0 \strokec3 : [\cb1 \
+\cb2                 \{\cb1 \
+\cb2                     \cf4 \strokec4 "id"\cf0 \strokec3 : \cf5 \strokec5 "1"\cf0 \cb1 \strokec3 \
+\cb2                 \}\cb1 \
+\cb2             ]\cb1 \
+\cb2         \},\cb1 \
+\cb2         \{\cb1 \
+\cb2             \cf4 \strokec4 "id"\cf0 \strokec3 : \cf5 \strokec5 "1"\cf0 \strokec3 ,\cb1 \
+\cb2             \cf4 \strokec4 "title"\cf0 \strokec3 : \cf5 \strokec5 "scan paperwork"\cf0 \strokec3 ,\cb1 \
+\cb2             \cf4 \strokec4 "doneStatus"\cf0 \strokec3 : \cf5 \strokec5 "false"\cf0 \strokec3 ,\cb1 \
+\cb2             \cf4 \strokec4 "description"\cf0 \strokec3 : \cf5 \strokec5 ""\cf0 \strokec3 ,\cb1 \
+\cb2             \cf4 \strokec4 "tasksof"\cf0 \strokec3 : [\cb1 \
+\cb2                 \{\cb1 \
+\cb2                     \cf4 \strokec4 "id"\cf0 \strokec3 : \cf5 \strokec5 "1"\cf0 \cb1 \strokec3 \
+\cb2                 \}\cb1 \
+\cb2             ],\cb1 \
+\cb2             \cf4 \strokec4 "categories"\cf0 \strokec3 : [\cb1 \
+\cb2                 \{\cb1 \
+\cb2                     \cf4 \strokec4 "id"\cf0 \strokec3 : \cf5 \strokec5 "1"\cf0 \cb1 \strokec3 \
+\cb2                 \}\cb1 \
+\cb2             ]\cb1 \
+\cb2         \}\cb1 \
+\cb2     ]\cb1 \
+\cb2 \}\cb1 \
+\cb2 \
+\
+We see the list of tasks, but not in order\
+\
+PUT \cb6 \outl0\strokewidth0 projects/1/tasks, 405 Method Not Allowed (as expected)\
+\
+Before testing post, I POSTed a todo that got ID 3, using that sample input from docs (without quotes around the boolean)\
+\
+\pard\pardeftab720\partightenfactor0
+\cf0 \cb6 POST projects/1/tasks with input\
+\
+\pard\pardeftab720\partightenfactor0
+\cf0 \cb2 \outl0\strokewidth0 \strokec3 \{\cb1 \
+\cb2   \cf4 \strokec4 "id"\cf0 \strokec3 : \cf5 \strokec5 "3"\cf0 \cb1 \strokec3 \
+\cb2 \}\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf0 \cb6 \outl0\strokewidth0 \
+GETting \cb6 projects/1/tasks shows that it was added:\cb6 \
+\pard\pardeftab720\partightenfactor0
+\cf0 \cb6 \
+\cb2 \outl0\strokewidth0 \strokec3 \{\cb1 \
+\cb2     \cf4 \strokec4 "todos"\cf0 \strokec3 : [\cb1 \
+\cb2         \{\cb1 \
+\cb2             \cf4 \strokec4 "id"\cf0 \strokec3 : \cf5 \strokec5 "2"\cf0 \strokec3 ,\cb1 \
+\cb2             \cf4 \strokec4 "title"\cf0 \strokec3 : \cf5 \strokec5 "file paperwork"\cf0 \strokec3 ,\cb1 \
+\cb2             \cf4 \strokec4 "doneStatus"\cf0 \strokec3 : \cf5 \strokec5 "false"\cf0 \strokec3 ,\cb1 \
+\cb2             \cf4 \strokec4 "description"\cf0 \strokec3 : \cf5 \strokec5 ""\cf0 \strokec3 ,\cb1 \
+\cb2             \cf4 \strokec4 "tasksof"\cf0 \strokec3 : [\cb1 \
+\cb2                 \{\cb1 \
+\cb2                     \cf4 \strokec4 "id"\cf0 \strokec3 : \cf5 \strokec5 "1"\cf0 \cb1 \strokec3 \
+\cb2                 \}\cb1 \
+\cb2             ]\cb1 \
+\cb2         \},\cb1 \
+\cb2         \{\cb1 \
+\cb2             \cf4 \strokec4 "id"\cf0 \strokec3 : \cf5 \strokec5 "3"\cf0 \strokec3 ,\cb1 \
+\cb2             \cf4 \strokec4 "title"\cf0 \strokec3 : \cf5 \strokec5 "a aliqua. Ut enim ad"\cf0 \strokec3 ,\cb1 \
+\cb2             \cf4 \strokec4 "doneStatus"\cf0 \strokec3 : \cf5 \strokec5 "true"\cf0 \strokec3 ,\cb1 \
+\cb2             \cf4 \strokec4 "description"\cf0 \strokec3 : \cf5 \strokec5 "n culpa qui officiaa"\cf0 \strokec3 ,\cb1 \
+\cb2             \cf4 \strokec4 "tasksof"\cf0 \strokec3 : [\cb1 \
+\cb2                 \{\cb1 \
+\cb2                     \cf4 \strokec4 "id"\cf0 \strokec3 : \cf5 \strokec5 "1"\cf0 \cb1 \strokec3 \
+\cb2                 \}\cb1 \
+\cb2             ]\cb1 \
+\cb2         \},\cb1 \
+\cb2         \{\cb1 \
+\cb2             \cf4 \strokec4 "id"\cf0 \strokec3 : \cf5 \strokec5 "1"\cf0 \strokec3 ,\cb1 \
+\cb2             \cf4 \strokec4 "title"\cf0 \strokec3 : \cf5 \strokec5 "scan paperwork"\cf0 \strokec3 ,\cb1 \
+\cb2             \cf4 \strokec4 "doneStatus"\cf0 \strokec3 : \cf5 \strokec5 "false"\cf0 \strokec3 ,\cb1 \
+\cb2             \cf4 \strokec4 "description"\cf0 \strokec3 : \cf5 \strokec5 ""\cf0 \strokec3 ,\cb1 \
+\cb2             \cf4 \strokec4 "tasksof"\cf0 \strokec3 : [\cb1 \
+\cb2                 \{\cb1 \
+\cb2                     \cf4 \strokec4 "id"\cf0 \strokec3 : \cf5 \strokec5 "1"\cf0 \cb1 \strokec3 \
+\cb2                 \}\cb1 \
+\cb2             ],\cb1 \
+\cb2             \cf4 \strokec4 "categories"\cf0 \strokec3 : [\cb1 \
+\cb2                 \{\cb1 \
+\cb2                     \cf4 \strokec4 "id"\cf0 \strokec3 : \cf5 \strokec5 "1"\cf0 \cb1 \strokec3 \
+\cb2                 \}\cb1 \
+\cb2             ]\cb1 \
+\cb2         \}\cb1 \
+\cb2     ]\cb1 \
+\cb2 \}\cb1 \
+\cb2 \
+POST projects/:id/categories and POST projects/:id/tasks do not function with XML API calls. I will document this in my unit test suite. They return error 404. The rest seems to behave as expected\
+\pard\pardeftab720\partightenfactor0
+\cf0 \cb1 \
+\
+}

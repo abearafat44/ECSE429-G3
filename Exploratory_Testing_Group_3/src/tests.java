@@ -1,21 +1,11 @@
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.URI;
-import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.net.http.HttpRequest.BodyPublisher;
-import java.net.http.HttpResponse.BodyHandlers;
-
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;     
+import java.net.http.HttpResponse;    
 import org.json.*;
 
 import org.junit.Test;
@@ -242,6 +232,15 @@ public class tests {
         assertEquals(200, response_str.statusCode());   
     }
 
+
+    @Test //Bug testing, Should return 404 yet doesn't
+    public void erroneous_todo_id_category_get_test() throws IOException, InterruptedException {
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/todos/500000/categories")).GET().build();
+        HttpResponse<String> response_str = client.send(request, HttpResponse.BodyHandlers.ofString());
+        assertNotEquals(404, response_str.statusCode());        
+    } 
+    
     @Test
     public void todo_id_categories_post_and_delete_test() throws IOException, InterruptedException {
         HttpClient client = HttpClient.newHttpClient();
@@ -1187,6 +1186,13 @@ public class tests {
         HttpResponse<String> response_str_del = client.send(request_del, HttpResponse.BodyHandlers.ofString());
         assertEquals(200, response_str_del.statusCode());
     }
+
+    @Test //Bug testing, Should return 404 yet doesn't
+    public void erroneous_todo_id_category_get_test() throws IOException, InterruptedException {
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:4567/projects/500000/categories")).GET().build();
+        HttpResponse<String> response_str = client.send(request, HttpResponse.BodyHandlers.ofString());
+        assertNotEquals(404, response_str.statusCode());
 
     @Test // Problem in the JSON: the right type is not used at the right place for multiple fields
     public void malformed_json_payload_test() throws IOException, InterruptedException {
