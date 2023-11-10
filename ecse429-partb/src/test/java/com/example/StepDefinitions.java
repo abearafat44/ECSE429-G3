@@ -3,6 +3,7 @@ package com.example;
 import io.cucumber.java.en.*;
 
 import org.junit.jupiter.api.Assertions.*;
+import org.json.JSONObject;
 
 public class StepDefinitions {
 

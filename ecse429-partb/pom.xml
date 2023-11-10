@@ -39,9 +39,8 @@
 
         <dependency>
             <groupId>org.json</groupId>
-            <artifactId>json</artifactId>
-            <version>20231013</version>
-            <type>bundle</type>
+            <artifactId>org.json</artifactId>
+            <version>chargebee-1.0</version>
         </dependency>
 
 
