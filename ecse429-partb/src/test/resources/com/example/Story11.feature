@@ -22,9 +22,9 @@ so I can better classify each project I am working on
 
     Examples: 
       | project_title | error |
-      | project1      | 404   |
-      | project2      | 404   |
-      | project3      | 404   |
+      | project4      | 404   |
+      | project5      | 404   |
+      | project6      | 404   |
 
   Scenario Outline: Add a project with no title to a category
     Given a category with title "<category_title>"
