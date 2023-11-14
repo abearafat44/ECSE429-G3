@@ -172,9 +172,12 @@ public class StepDefinitions {
     }
     
     @Then("I get an error code {int}")
-    public void i_get_an_error_code(Integer int1) throws JSONException {
-        int error = object.getInt("errorCode");
-        assertEquals(int1, error);
+    public void i_get_an_error_code(Integer int1) throws Exception {
+        try{int error = object.getInt("errorCode");
+        assertEquals(int1, error);}
+        catch(Exception e) {
+            throw new Exception(e.toString());
+        }
 }
 
 
