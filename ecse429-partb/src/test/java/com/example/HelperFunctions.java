@@ -216,6 +216,53 @@ public class HelperFunctions {
           return array.getJSONObject(0).getString("title");
       }
 
+      public static JSONObject deleteProjectFromCategory(int pId, int catId) throws JSONException, ClientProtocolException, IOException {
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+          HttpDelete request = new HttpDelete(uri + "categories/" + catId + "/projects/" + pId);
+          JSONObject payload = new JSONObject();
+          StringEntity entity = new StringEntity(payload.toString());
+          request.addHeader("content-type", "application/json");
+          HttpResponse response = httpClient.execute(request);
+          //assertEquals(201, response.getStatusLine().getStatusCode());
+          if(response.getStatusLine().getStatusCode() == 201){
+            HttpGet request2 = new HttpGet(uri+"categories/"+catId);
+            request2.setProtocolVersion(HttpVersion.HTTP_1_0);
+            HttpResponse response2 = httpClient.execute(request2);
+            String buffer = convertResponseToString(response2);
+            JSONObject answer = new JSONObject(buffer);
+            httpClient.close();
+            return answer;  
+          } else {
+            try{
+                response = httpClient.execute(request);
+            }
+            catch (Exception e) {
+                System.out.println(e.toString());
+            }
+            if(response.getStatusLine().getStatusCode() == 404) {
+                JSONObject error = new JSONObject();
+                error.put("error",response.getStatusLine().getStatusCode());
+                return error;
+            }
+            String buffer = convertResponseToString(response);
+            JSONObject answer = new JSONObject(buffer);
+            httpClient.close();
+            return answer;
+          }
+      }
+
+      public static JSONObject get_category(int id)throws JSONException, ClientProtocolException, IOException {
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+          HttpGet request = new HttpGet(uri + "categories/" + id);
+          JSONObject payload = new JSONObject();
+          StringEntity entity = new StringEntity(payload.toString());
+          request.addHeader("content-type", "application/json");
+          HttpResponse response = httpClient.execute(request);
+          String buffer = convertResponseToString(response);
+          JSONObject answer = new JSONObject(buffer);
+          return answer;
+      }
+
     // public static int project_delete(int id) {
         
     // }

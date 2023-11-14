@@ -178,8 +178,59 @@ public class StepDefinitions {
         catch(Exception e) {
             throw new Exception(e.toString());
         }
-}
+    }
 
+    @Given("a category with title {string} with project with {string} in it") 
+    public void category_projects(String cat, String project) throws ClientProtocolException, JSONException, IOException {
+        // JSONObject create = HelperFunctions.createProject(project, false, false, project);
+        // JSONArray array = create.getJSONArray("projects");
+        // id=array.getJSONObject(0).getInt("id");
+        JSONObject create = HelperFunctions.createCategory(cat,cat);
+        JSONArray array = create.getJSONArray("categories");
+        id1=array.getJSONObject(0).getInt("id");
+        object=HelperFunctions.addProjectToCategory(project, id1);        
+    }
 
+    @When("I delete the project with title {string} from the category")
+    public void delete_project_in_category(String title) throws ClientProtocolException, JSONException, IOException {
+        if(object == null){
+            object = HelperFunctions.deleteProjectFromCategory(0, 0);
+        } else {
+            JSONArray array = object.getJSONArray("categories");
+            JSONArray array2 = array.getJSONObject(0).getJSONArray("projects");
+            for(int i = 0; i < array2.length(); i++){
 
+                String name = HelperFunctions.get_project_name(Integer.valueOf(array2.getJSONObject(i).get("id").toString()));
+                if(name.equals(title)){
+                    object = HelperFunctions.deleteProjectFromCategory(Integer.valueOf(array2.getJSONObject(i).get("id").toString()),id1);
+                }
+            }
+        }
+        
+    }
+    
+    @Then("the category will no longer have the project with title {string}")
+    public void check_delete_project_in_category(String title) throws ClientProtocolException, JSONException, IOException {
+        JSONArray array = HelperFunctions.get_category(id1).getJSONArray("categories");
+        if(array.getJSONObject(0).optJSONArray("projects") != null){
+            JSONArray array2 = array.getJSONObject(0).getJSONArray("projects");
+            boolean exists = false;
+            for(int i = 0; i < array2.length(); i++){
+
+                String name = HelperFunctions.get_project_name(Integer.valueOf(array2.getJSONObject(i).get("id").toString()));
+                if(name.equals(title)){
+                    exists = true;
+                }
+            }
+            assertFalse(exists);
+        } else {
+            assertTrue(true);
+        }
+        
+    }
+
+    @When("I delete a non-existant project from the category")
+    public void delete_null_in_category() throws ClientProtocolException, JSONException, IOException {
+        object = HelperFunctions.deleteProjectFromCategory(0, 0);
+    }
 }
