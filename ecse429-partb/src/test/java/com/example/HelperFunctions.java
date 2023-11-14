@@ -11,6 +11,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -110,8 +111,31 @@ public class HelperFunctions {
         return answer;  
     }
 
-    public static int project_delete(int id) {
-        
+    public static int project_delete(int id) throws ClientProtocolException, IOException {
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+        HttpDelete request = new HttpDelete(uri+"projects/" + id);
+        HttpResponse response = httpClient.execute(request);
+        int status = response.getStatusLine().getStatusCode();
+        return status;
+
+    }
+
+    public static JSONObject addTasks(int task_id, int project_id) throws JSONException, ClientProtocolException, IOException{
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+        HttpPost request = new HttpPost(uri + "projects/" + project_id + "/tasks");
+        JSONObject payload = new JSONObject();
+        payload.put("id",String.valueOf(task_id));
+        StringEntity entity = new StringEntity(payload.toString());
+        request.setEntity(entity);
+        HttpResponse response = httpClient.execute(request);
+        assertEquals(201, response.getStatusLine().getStatusCode());
+        HttpGet request2 = new HttpGet(uri+"projects/" + project_id);
+        request2.setProtocolVersion(HttpVersion.HTTP_1_0);
+        HttpResponse response2 = httpClient.execute(request2);
+        String buffer = convertResponseToString(response2);
+        JSONObject answer = new JSONObject(buffer);
+        httpClient.close();
+        return answer;  
     }
     //Helper function taken from https://www.baeldung.com/cucumber-rest-api-testing, all credit the author
     private static String convertResponseToString(HttpResponse response) throws IOException {

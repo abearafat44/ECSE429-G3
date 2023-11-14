@@ -16,6 +16,7 @@ import org.json.JSONObject;
 public class StepDefinitions {
     private int id = 0;
     private JSONObject object;
+    private int statusCode;
 
     @Given("a task with existing description {string}")
     public void a_task_with_description(String description) throws ClientProtocolException, JSONException, IOException {
@@ -50,22 +51,30 @@ public class StepDefinitions {
         JSONObject create = HelperFunctions.createProject(project, false, false, project);
         JSONArray array = create.getJSONArray("projects");
         id=array.getJSONObject(0).getInt("id");
+        JSONObject task_project = HelperFunctions.addTasks(1,id);
+    }
+
+    @Given("the empty existing project {string}")
+    public void empty_project(String project) throws ClientProtocolException, JSONException, IOException {
+       JSONObject create = HelperFunctions.createProject(project, false, false, project);
+        JSONArray array = create.getJSONArray("projects");
+        id=array.getJSONObject(0).getInt("id"); 
     }
 
     @When("I delete the project {string}")
-    public void project_delete(String project) {
-        
+    public void project_delete(String project) throws ClientProtocolException, IOException {
+        statusCode = HelperFunctions.project_delete(id);
 
     }
 
-    @Then("The project will no longer exist")
+    @Then("the project will no longer exist")
     public void non_exist() {
-
+        assertEquals(200, statusCode);
     }
 
     @Then("I will get an error code {int}")
     public void error(int error) {
-
+        assertEquals(statusCode, 404);
     }
 
 }

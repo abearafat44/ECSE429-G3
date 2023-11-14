@@ -25,7 +25,7 @@ so I can manage my time
       | Attempt4 |
 
   Scenario Outline: I delete an unexisting project
-    When i delete the project "<project>"
+    When I delete the project "<project>"
     Then I will get an error code <error>
 
     Examples: 
