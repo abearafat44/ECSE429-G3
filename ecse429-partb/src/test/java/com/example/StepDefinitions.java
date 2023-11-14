@@ -45,4 +45,27 @@ public class StepDefinitions {
 
     }
 
+    @Given("the existing project {string} containing tasks")
+    public void project_exists(String project) throws ClientProtocolException, JSONException, IOException {
+        JSONObject create = HelperFunctions.createProject(project, false, false, project);
+        JSONArray array = create.getJSONArray("projects");
+        id=array.getJSONObject(0).getInt("id");
+    }
+
+    @When("I delete the project {string}")
+    public void project_delete(String project) {
+        
+
+    }
+
+    @Then("The project will no longer exist")
+    public void non_exist() {
+
+    }
+
+    @Then("I will get an error code {int}")
+    public void error(int error) {
+
+    }
+
 }

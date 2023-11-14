@@ -87,6 +87,32 @@ public class HelperFunctions {
         httpClient.close();
         return answer;
     }
+
+    public static JSONObject createProject(String name, boolean complete, boolean active,String description) throws JSONException, ClientProtocolException, IOException {
+      CloseableHttpClient httpClient = HttpClients.createDefault();
+        HttpPost request = new HttpPost(uri + "projects" );
+        JSONObject payload = new JSONObject();
+        if(name != null) payload.put("title", name);
+        if(complete == true || complete == false) payload.put("completed", complete);
+        if(active == true || active == false) payload.put("active", active);
+        if(description != null) payload.put("description", description);
+        StringEntity entity = new StringEntity(payload.toString());
+        request.addHeader("content-type", "application/json");
+        request.setEntity(entity);
+        HttpResponse response = httpClient.execute(request);
+        assertEquals(201, response.getStatusLine().getStatusCode());
+        HttpGet request2 = new HttpGet(uri+"projects?title="+name);
+        request2.setProtocolVersion(HttpVersion.HTTP_1_0);
+        HttpResponse response2 = httpClient.execute(request2);
+        String buffer = convertResponseToString(response2);
+        JSONObject answer = new JSONObject(buffer);
+        httpClient.close();
+        return answer;  
+    }
+
+    public static int project_delete(int id) {
+        
+    }
     //Helper function taken from https://www.baeldung.com/cucumber-rest-api-testing, all credit the author
     private static String convertResponseToString(HttpResponse response) throws IOException {
     InputStream responseStream = response.getEntity().getContent();
@@ -95,4 +121,6 @@ public class HelperFunctions {
     scanner.close();
     return responseString;
 }
+
+
 }
