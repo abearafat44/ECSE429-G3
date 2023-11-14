@@ -216,9 +216,35 @@ public class HelperFunctions {
           return array.getJSONObject(0).getString("title");
       }
 
-    // public static int project_delete(int id) {
-        
-    // }
+    
+      public static JSONObject remove_link_project_task(int project, int task) throws ClientProtocolException, IOException, JSONException {
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+        HttpDelete request = new HttpDelete(uri + "projects/" + project + "/tasks/" + task);
+        HttpResponse response = httpClient.execute(request);
+        if(response.getStatusLine().getStatusCode() == 404) {
+            JSONObject answer = new JSONObject();
+            answer.put("errorCode", response.getStatusLine().getStatusCode());
+            return answer;
+        }
+        else {
+            return null;
+        }
+      }
+
+      public static JSONObject getProjectTasks(int id) throws ClientProtocolException, IOException, JSONException {
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+      HttpGet request = new HttpGet(uri + "projects/" + id + "/tasks");
+      HttpResponse response = httpClient.execute(request);
+      if(response.getStatusLine().getStatusCode() == 404) {
+        JSONObject answer = new JSONObject();
+        answer.put("errorCode", response.getStatusLine().getStatusCode());
+        return answer;
+      }
+      String buffer = convertResponseToString(response);
+      JSONObject answer = new JSONObject(buffer);
+      httpClient.close();
+      return answer; 
+      }
     //Helper function taken from https://www.baeldung.com/cucumber-rest-api-testing, all credit the author
     private static String convertResponseToString(HttpResponse response) throws IOException {
     InputStream responseStream = response.getEntity().getContent();

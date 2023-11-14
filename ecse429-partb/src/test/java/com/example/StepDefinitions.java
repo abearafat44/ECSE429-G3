@@ -25,14 +25,14 @@ public class StepDefinitions {
 
     @Given("a task with existing description {string}")
     public void a_task_with_description(String description) throws ClientProtocolException, JSONException, IOException {
-        JSONObject create = HelperFunctions.createTodo("test"+id,false, description);
+        JSONObject create = HelperFunctions.createTodo("test"+id1,false, description);
         JSONArray array = create.getJSONArray("todos");
-        id=array.getJSONObject(0).getInt("id");
+        id1=array.getJSONObject(0).getInt("id");
     }
 
     @When("I change the tasks description to {string}")
     public void i_change_descriptions_to(String new_desc) throws ClientProtocolException, JSONException, IOException {
-        object=HelperFunctions.modifyTodo(id,null,false,new_desc);
+        object=HelperFunctions.modifyTodo(id1,null,false,new_desc);
     }
 
     @Then("the task will have a new description {string}")
@@ -179,7 +179,22 @@ public class StepDefinitions {
             throw new Exception(e.toString());
         }
 }
+    @When("I remove the link between {string} and {string}")
+    public void remove_link(String project, String task) throws ClientProtocolException, IOException, JSONException {
+        object = HelperFunctions.remove_link_project_task(id, id1);
+    }
 
-
-
+    @Then("{string} will only contain {string}")
+    public void final_contain(String project, String task) throws ClientProtocolException, IOException, JSONException {
+        object = HelperFunctions.getProjectTasks(id);
+        JSONArray array = object.getJSONArray("todos");
+        assertEquals(1, array.length());
+        assertEquals(array.getJSONObject(0).getInt("id"), id2);
+    }
+    @Then("{string} will contain no tasks")
+    public void no_tasks_project(String project) throws ClientProtocolException, IOException, JSONException {
+        object = HelperFunctions.getProjectTasks(id);
+        JSONArray array = object.getJSONArray("todos");
+        assertEquals(0, array.length());
+    }
 }
