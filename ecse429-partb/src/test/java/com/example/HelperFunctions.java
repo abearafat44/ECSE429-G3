@@ -137,6 +137,79 @@ public class HelperFunctions {
         httpClient.close();
         return answer;  
     }
+    public static JSONObject createCategory(String title, String description) throws JSONException, ClientProtocolException, IOException {
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+          HttpPost request = new HttpPost(uri + "categories" );
+          JSONObject payload = new JSONObject();
+          if(title != null) payload.put("title", title);
+          if(description != null) payload.put("description", description);
+          StringEntity entity = new StringEntity(payload.toString());
+          request.addHeader("content-type", "application/json");
+          request.setEntity(entity);
+          HttpResponse response = httpClient.execute(request);
+          assertEquals(201, response.getStatusLine().getStatusCode());
+          HttpGet request2 = new HttpGet(uri+"categories?title="+title);
+          request2.setProtocolVersion(HttpVersion.HTTP_1_0);
+          HttpResponse response2 = httpClient.execute(request2);
+          String buffer = convertResponseToString(response2);
+          JSONObject answer = new JSONObject(buffer);
+          httpClient.close();
+          return answer;  
+      }
+
+      public static JSONObject addProjectToCategory(String title, int catId) throws JSONException, ClientProtocolException, IOException {
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+          HttpPost request = new HttpPost(uri + "categories/" + catId + "/projects");
+          JSONObject payload = new JSONObject();
+          if(title != null) payload.put("title", title);
+          StringEntity entity = new StringEntity(payload.toString());
+          request.addHeader("content-type", "application/json");
+          request.setEntity(entity);
+          HttpResponse response = httpClient.execute(request);
+          //assertEquals(201, response.getStatusLine().getStatusCode());
+          if(response.getStatusLine().getStatusCode() == 201){
+            HttpGet request2 = new HttpGet(uri+"categories/"+catId);
+            request2.setProtocolVersion(HttpVersion.HTTP_1_0);
+            HttpResponse response2 = httpClient.execute(request2);
+            String buffer = convertResponseToString(response2);
+            JSONObject answer = new JSONObject(buffer);
+            httpClient.close();
+            return answer;  
+          } else {
+            try{
+                response = httpClient.execute(request);
+            }
+            catch (Exception e) {
+                System.out.println(e.toString());
+            }
+            if(response.getStatusLine().getStatusCode() == 404) {
+                JSONObject error = new JSONObject();
+                error.put("error",response.getStatusLine().getStatusCode());
+                return error;
+            }
+            String buffer = convertResponseToString(response);
+            JSONObject answer = new JSONObject(buffer);
+            httpClient.close();
+            return answer;
+          }
+      }
+
+      public static String get_project_name(int id)throws JSONException, ClientProtocolException, IOException {
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+          HttpGet request = new HttpGet(uri + "projects/" + id);
+          JSONObject payload = new JSONObject();
+          StringEntity entity = new StringEntity(payload.toString());
+          request.addHeader("content-type", "application/json");
+          HttpResponse response = httpClient.execute(request);
+          String buffer = convertResponseToString(response);
+          JSONObject answer = new JSONObject(buffer);
+          JSONArray array = answer.getJSONArray("projects");
+          return array.getJSONObject(0).getString("title");
+      }
+
+    // public static int project_delete(int id) {
+        
+    // }
     //Helper function taken from https://www.baeldung.com/cucumber-rest-api-testing, all credit the author
     private static String convertResponseToString(HttpResponse response) throws IOException {
     InputStream responseStream = response.getEntity().getContent();

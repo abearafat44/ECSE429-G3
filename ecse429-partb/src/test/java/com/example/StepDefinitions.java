@@ -5,6 +5,8 @@ import io.cucumber.java.en.*;
 import org.junit.jupiter.api.Assertions.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 
@@ -15,6 +17,8 @@ import org.json.JSONObject;
 
 public class StepDefinitions {
     private int id = 0;
+    private int id1 = 0;
+    private int id2 = 0;
     private JSONObject object;
     private int statusCode;
 
@@ -76,5 +80,38 @@ public class StepDefinitions {
     public void error(int error) {
         assertEquals(statusCode, 404);
     }
+
+    @Given("a category with title {string}")
+    public void a_category_with_title(String title) throws ClientProtocolException, JSONException, IOException {
+        JSONObject create = HelperFunctions.createCategory(title, "");
+        JSONArray array = create.getJSONArray("categories");
+        id=array.getJSONObject(0).getInt("id");
+    }
+
+    @Given("a non-existant category")
+    public void a_null_category() throws ClientProtocolException, JSONException, IOException {
+        id=0;
+    }
+
+    @When("I add the project with title {string} to the category")
+    public void add_project_to_category(String title) throws ClientProtocolException, JSONException, IOException {
+        object=HelperFunctions.addProjectToCategory(title, id);
+    }
+
+    @Then("the category will have the project with title {string}")
+    public void category_has_project(String title) throws ClientProtocolException, JSONException, IOException {
+        JSONArray array = object.getJSONArray("categories");
+        JSONArray array2 = array.getJSONObject(0).getJSONArray("projects");
+        boolean exists = false;
+        for(int i = 0; i < array2.length(); i++){
+
+            String name = HelperFunctions.get_project_name(Integer.valueOf(array2.getJSONObject(i).get("id").toString()));
+            if(name.equals(title)){
+                exists = true;
+            }
+        }
+        assertTrue(exists);
+    }
+
 
 }
