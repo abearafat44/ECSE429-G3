@@ -394,7 +394,7 @@ public class StepDefinitions {
 
         assertTrue(p1exists);
     }
-}
+
     @When("I remove the link between {string} and {string}")
     public void remove_link(String project, String task) throws ClientProtocolException, IOException, JSONException {
         object = HelperFunctions.remove_link_project_task(id, id1);

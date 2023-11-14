@@ -1,4 +1,4 @@
-@Story012
+@Story014
 Feature: Category in project deletion
 As a student,
 I want to delete categories in a project,

@@ -1,4 +1,4 @@
-@Story013
+@Story015
 Feature: List all categories in a project
 As a student,
 I want to list all categories in a project,
