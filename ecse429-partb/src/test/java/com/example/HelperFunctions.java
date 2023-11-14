@@ -120,7 +120,7 @@ public class HelperFunctions {
 
     }
 
-    public static JSONObject addTasks(int task_id, int project_id) throws JSONException, ClientProtocolException, IOException{
+    public static void addTasks(int task_id, int project_id) throws JSONException, ClientProtocolException, IOException{
         CloseableHttpClient httpClient = HttpClients.createDefault();
         HttpPost request = new HttpPost(uri + "projects/" + project_id + "/tasks");
         JSONObject payload = new JSONObject();
@@ -128,15 +128,24 @@ public class HelperFunctions {
         StringEntity entity = new StringEntity(payload.toString());
         request.setEntity(entity);
         HttpResponse response = httpClient.execute(request);
-        assertEquals(201, response.getStatusLine().getStatusCode());
-        HttpGet request2 = new HttpGet(uri+"projects/" + project_id);
-        request2.setProtocolVersion(HttpVersion.HTTP_1_0);
-        HttpResponse response2 = httpClient.execute(request2);
-        String buffer = convertResponseToString(response2);
-        JSONObject answer = new JSONObject(buffer);
-        httpClient.close();
-        return answer;  
+        assertEquals(201, response.getStatusLine().getStatusCode()); 
     }
+
+    public static JSONObject getIncompleteTasksProject(int id) throws ClientProtocolException, IOException, JSONException {
+      CloseableHttpClient httpClient = HttpClients.createDefault();
+      HttpGet request = new HttpGet(uri + "projects/" + id + "/tasks?doneStatus=false");
+      HttpResponse response = httpClient.execute(request);
+      if(response.getStatusLine().getStatusCode() == 404) {
+        JSONObject answer = new JSONObject();
+        answer.put("errorCode", response.getStatusLine().getStatusCode());
+        return answer;
+      }
+      String buffer = convertResponseToString(response);
+      JSONObject answer = new JSONObject(buffer);
+      httpClient.close();
+      return answer; 
+    }
+
     public static JSONObject createCategory(String title, String description) throws JSONException, ClientProtocolException, IOException {
         CloseableHttpClient httpClient = HttpClients.createDefault();
           HttpPost request = new HttpPost(uri + "categories" );
