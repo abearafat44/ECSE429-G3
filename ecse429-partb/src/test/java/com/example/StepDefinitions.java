@@ -343,9 +343,6 @@ public class StepDefinitions {
 
     @Given("a project with title {string} with categories with {string} and {string} in it") 
     public void projects_two_cat(String project, String cat1, String cat2) throws ClientProtocolException, JSONException, IOException {
-        // JSONObject create = HelperFunctions.createProject(project, false, false, project);
-        // JSONArray array = create.getJSONArray("projects");
-        // id=array.getJSONObject(0).getInt("id");
         JSONObject create = HelperFunctions.createProject(project,false,false,project);
         JSONArray array = create.getJSONArray("projects");
         id=array.getJSONObject(0).getInt("id");
@@ -412,5 +409,40 @@ public class StepDefinitions {
         object = HelperFunctions.getProjectTasks(id);
         JSONArray array = object.getJSONArray("todos");
         assertEquals(0, array.length());
+    }
+    @When("I create a task with title {string}, doneStatus {string} and description {string}")
+    public void create_task(String title, String doneStatus, String description) throws ClientProtocolException, JSONException, IOException {
+        Boolean bool = (doneStatus == "true");
+        object = HelperFunctions.createTodo(title,bool, description);
+        JSONArray array = object.getJSONArray("todos");
+        id1=array.getJSONObject(0).getInt("id");
+    }
+    @Then("a task with {string}, {string} and {string} is created")
+    public void check_task(String title, String doneStatus, String description) throws JSONException {
+        Boolean bool = (doneStatus == "true");
+        JSONArray array = object.getJSONArray("todos");
+        assertEquals(title, array.getJSONObject(0).getString("title"));
+        assertEquals(bool, array.getJSONObject(0).getBoolean("doneStatus"));
+        assertEquals(description, array.getJSONObject(0).getString("description"));
+    }
+
+    @When("I create a task with title {string} and doneStatus {string}")
+    public void create_missing_task(String title, String doneStatus) throws ClientProtocolException, JSONException, IOException {
+        Boolean bool = (doneStatus == "true");
+       object = HelperFunctions.createTodo(title,bool,null);
+        JSONArray array = object.getJSONArray("todos");
+        id1=array.getJSONObject(0).getInt("id"); 
+    }
+
+    @When("I create a task without a title and description {string}")
+    public void create_invalid_task(String description) throws ClientProtocolException, JSONException, IOException {
+        object = HelperFunctions.createTodo(null, false, description);
+        
+    }
+
+    @Then("I get an error {int}")
+    public void error_check(int error) throws JSONException {
+        int errorCode = object.getInt("errorCode");
+        assertEquals(error, errorCode);
     }
 }

@@ -52,14 +52,30 @@ public class HelperFunctions {
         request.addHeader("content-type", "application/json");
         request.setEntity(entity);
         HttpResponse response = httpClient.execute(request);
-        assertEquals(201, response.getStatusLine().getStatusCode());
-        HttpGet request2 = new HttpGet(uri+"todos?description="+desc);
+        if(response.getStatusLine().getStatusCode() == 400) {
+            JSONObject answer = new JSONObject();
+            answer.put("errorCode", response.getStatusLine().getStatusCode());
+            return answer;
+        }
+        if(desc != null){
+            HttpGet request2 = new HttpGet(uri+"todos?description="+desc);
         request2.setProtocolVersion(HttpVersion.HTTP_1_0);
         HttpResponse response2 = httpClient.execute(request2);
         String buffer = convertResponseToString(response2);
         JSONObject answer = new JSONObject(buffer);
         httpClient.close();
         return answer;
+        }
+        else{
+           HttpGet request2 = new HttpGet(uri+"todos?title="+name);
+        request2.setProtocolVersion(HttpVersion.HTTP_1_0);
+        HttpResponse response2 = httpClient.execute(request2);
+        String buffer = convertResponseToString(response2);
+        JSONObject answer = new JSONObject(buffer);
+        httpClient.close();
+        return answer; 
+        }
+        
     }
 
     public static JSONObject modifyTodo(int id,String name, boolean done, String desc) throws JSONException, ClientProtocolException, IOException {
