@@ -1,6 +1,9 @@
 @Story08
+#James Willems 260921223
 Feature: Get not done todos from projects
 As a student, i want to get all tasks of a project that are not completed
+
+#Normal Flow
 
   Scenario Outline: Get incomplete tasks from a project that contains some
     Given the existing project "<project>" containing incomplete tasks "<one>" and "<two>"
@@ -13,6 +16,8 @@ As a student, i want to get all tasks of a project that are not completed
       | PartB   | UserStory1 | UserStory2 | UserStory6 |
       | PartC   | UserStory3 | UserStory4 | UserStory7 |
 
+#Alternate Flow
+
   Scenario Outline: Get incomplete tasks from a project that dont contain any
     Given the existing project "<project>" containing completed tasks "<one>"
     When I request incomplete tasks from "<project>"
@@ -22,6 +27,8 @@ As a student, i want to get all tasks of a project that are not completed
       | project | one      |
       | PartA   | testing  |
       | PartD   | securing |
+
+#Error Flow
 
   Scenario Outline: Get incomplete tasks from inexistant project
     When I request incomplete tasks from "<project>"

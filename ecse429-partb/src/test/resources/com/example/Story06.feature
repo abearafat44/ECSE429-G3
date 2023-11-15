@@ -1,8 +1,11 @@
 @Story06
+#James Willems 260921223
 Feature: Task description modification
 As a student,
 I modify a tasks description,
 so I can better illustrate what I want to do
+
+#Normal Flow
 
   Scenario Outline: Change a task's description
     Given a task with existing description "<existing_description>"
@@ -14,6 +17,8 @@ so I can better illustrate what I want to do
       | CreateTask           | SeeTask         |
       | SeeTask              | ToDelete        |
 
+#Alternate Flow
+
   Scenario Outline: Change a task's description with an empty one
     Given a task with existing description "<description>"
     When I change the tasks description to "<new_description>"
@@ -24,6 +29,8 @@ so I can better illustrate what I want to do
       | Bonsoir     |                 |
       | BomDia      |                 |
       | Bonjour     |                 |
+
+#Error Flow
 
   Scenario Outline: Change a non-existent task's description
     Given a non-existing task with "<empty_description>"

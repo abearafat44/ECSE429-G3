@@ -1,5 +1,8 @@
 @Story10
+#James Willems 260921223
 Feature: As a student, I want to create todos to planify work
+
+#Normal flow
 
   Scenario Outline: Creating a todo with all parameters
 
@@ -12,6 +15,8 @@ Feature: As a student, I want to create todos to planify work
       | FirstTask  | false      | trial       |
       | SecondTask | true       | hola        |
 
+#Alternate Flow
+
   Scenario Outline: Create a todo with a parameters missing
     When I create a task with title "<title>" and doneStatus "<doneStatus>"
     Then a task with "<title>", "<doneStatus>" and "<description>" is created
@@ -20,6 +25,8 @@ Feature: As a student, I want to create todos to planify work
       | title      | doneStatus | description |
       | ThirdTask  | true       |             |
       | FourthTask | false      |             |
+
+#Error flow
 
   Scenario Outline: Create a todo without a title
     When I create a task without a title and description "<description>"

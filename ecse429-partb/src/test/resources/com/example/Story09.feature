@@ -1,6 +1,9 @@
 @Story09
+#James Willems 260921223
 Feature: Task relationship deletion
 As a student, I want to delete the link between a todo and a project once it is completed
+
+#Normal Flow
 
   Scenario Outline: Remove task from project containing others
     Given the existing project "<project>" containing incomplete tasks "<task1>" and "<task2>"
@@ -12,6 +15,8 @@ As a student, I want to delete the link between a todo and a project once it is 
       | ECSE429 | exploratory | unit       |
       | ECSE321 | development | production |
 
+#Alternate Flow
+
   Scenario Outline: Remove task from project containing none others
     Given the existing project "<project>" containing completed tasks "<one>"
     When I remove the link between "<project>" and "<one>"
@@ -21,6 +26,8 @@ As a student, I want to delete the link between a todo and a project once it is 
       | project | one              |
       | ECSE223 | ModelProgramming |
       | FACC300 | Econ4Eng         |
+
+#Error Flow
 
   Scenario Outline: Remove task from non-existent project
     Given a task with existing description "<one>"
