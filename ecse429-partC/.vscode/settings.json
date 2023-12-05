@@ -1,0 +1,9 @@
+{
+    "java.project.sourcePaths": ["src"],
+    "java.project.outputPath": "bin",
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "c:\\Users\\james\\OneDrive\\Documents\\ECSE429\\ECSE429-G3\\Exploratory_Testing_Group_3\\lib\\json-20231013.jar",
+        "c:\\Users\\james\\OneDrive\\Documents\\ECSE429\\ECSE429-G3\\Exploratory_Testing_Group_3\\lib\\junit-platform-console-standalone-1.10.0.jar"
+    ]
+}
